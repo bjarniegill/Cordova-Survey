@@ -342,63 +342,65 @@ init: function() {
   
 /* Record User Responses */  
 recordResponse: function(button, count, type) {
-		//uncomment up to "localStore[uniqueRecord] = response;" to test whether app is recording and sending data correctly (Stage 2 of Customization)
-		//This tells ExperienceSampler how to save data from the various formats
+	//uncomment up to "localStore[uniqueRecord] = response;" to test whether app is recording and sending data correctly (Stage 2 of Customization)
+	//This tells ExperienceSampler how to save data from the various formats
 	//Record date (create new date object)
-	 var datestamp = new Date();
-	 var year = datestamp.getFullYear(), month = datestamp.getMonth(), day=datestamp.getDate(), hours=datestamp.getHours(), minutes=datestamp.getMinutes(), seconds=datestamp.getSeconds(), milliseconds=datestamp.getMilliseconds();
-	 //Record value of text field
-	 var response, currentQuestion, uniqueRecord;
-	 if (type == 'text') {
-		 response = button.val();
-		 // remove newlines from user input
-		 response = response.replace(/(\r\n|\n|\r)/g, ""); //encodeURIComponent(); decodeURIComponent()
-		 currentQuestion = button.attr('id').slice(0,-1);
-	 }
-	 else if (type == 'slider') {
-		response = button.split(/,(.+)/)[1];
-		 currentQuestion = button.split(",",1);
-	 }
-	 //Record the array
-	 else if (type == 'checklist') {
-		 response = button.split(/,(.+)/)[1];
-		 currentQuestion = button.split(",",1);
-	 }
-	 else if (type == 'instructions') {
-		response = button.split(/,(.+)/)[1];
-		 currentQuestion = button.split(",",1);
-	 }
-	 //Record value of clicked button
-	 else if (type == 'mult1') {
-		 response = button.value;
-		 //Create a unique identifier for this response
-		 currentQuestion = button.id.slice(0,-1);
-	 }
-	 //Record value of clicked button
-	 else if (type == 'mult2') {
-		 response = button.value;
-		 //Create a unique identifier for this response
-		 currentQuestion = button.id.slice(0,-1);
-	 }
-	 else if (type == 'datePicker') {
+	var datestamp = new Date();
+	var year = datestamp.getFullYear(), month = datestamp.getMonth(), day=datestamp.getDate(), hours=datestamp.getHours(), minutes=datestamp.getMinutes(), seconds=datestamp.getSeconds(), milliseconds=datestamp.getMilliseconds();
+	//Record value of text field
+	var response, currentQuestion, uniqueRecord;
+	if (type == 'text') {
+		response = button.val();
+		// remove newlines from user input
+		response = response.replace(/(\r\n|\n|\r)/g, ""); //encodeURIComponent(); decodeURIComponent()
+		currentQuestion = button.attr('id').slice(0,-1);
+	}
+	else if (type == 'slider') {
 		response = button.split(/,(.+)/)[1];
 		currentQuestion = button.split(",",1);
-	 }
-	 else if (type == 'dateAndTimePicker') {
+	}
+	//Record the array
+	else if (type == 'checklist') {
 		response = button.split(/,(.+)/)[1];
 		currentQuestion = button.split(",",1);
-	 }
-	 else if (type == 'timePicker') {
+	}
+	else if (type == 'instructions') {
 		response = button.split(/,(.+)/)[1];
 		currentQuestion = button.split(",",1);
-	 }
-	 if (count <= -1) {uniqueRecord = currentQuestion}
-	 else {uniqueRecord = uniqueKey + "_" + currentQuestion + "_" + year + "_" + month + "_" + day + "_" + hours + "_" + minutes + "_" + seconds + "_" + milliseconds;}
-//     //Save this to local storage
-	 localStore[uniqueRecord] = response;
+	}
+	//Record value of clicked button
+	else if (type == 'mult1') {
+		response = button.value;
+		//Create a unique identifier for this response
+		currentQuestion = button.id.slice(0,-1);
+	}
+	//Record value of clicked button
+	else if (type == 'mult2') {
+		response = button.value;
+		//Create a unique identifier for this response
+		currentQuestion = button.id.slice(0,-1);
+	}
+	else if (type == 'datePicker') {
+		response = button.split(/,(.+)/)[1];
+		currentQuestion = button.split(",",1);
+	}
+	else if (type == 'dateAndTimePicker') {
+		response = button.split(/,(.+)/)[1];
+		currentQuestion = button.split(",",1);
+	}
+	else if (type == 'timePicker') {
+		response = button.split(/,(.+)/)[1];
+		currentQuestion = button.split(",",1);
+	}
+	if (count <= -1) {
+		uniqueRecord = currentQuestion
+	}
+	else {
+		uniqueRecord = uniqueKey + "_" + currentQuestion + "_" + year + "_" + month + "_" + day + "_" + hours + "_" + minutes + "_" + seconds + "_" + milliseconds;
+	}
+	//Save this to local storage
+	localStore[uniqueRecord] = response;
 		
-	
-	
 	//		/*Question Logic Statements*/
 	//Stage 3 of Customization
 	//		//if your questionnaire has two branches based on the absence or presence of a phenomenon, you will need the next statement
@@ -410,16 +412,24 @@ recordResponse: function(button, count, type) {
 	//		//where X is the question index number of the question you ask for response you would like to pipe
 	//		//In this example, we just use name to consist with our earlier variables
 			//if (count ==6) {name = response;}
-		if (count <= -1) {console.log(uniqueRecord);}
+	if (count <= -1) {
+		console.log(uniqueRecord);
+	}
 	//		//The line below states that if the app is on the last question of participant setup, it should schedule all the notifications
 	//		//then display the default end of survey message, and then record which notifications have been scheduled.
 	//		//You will test local notifications in Stage 4 of customizing the app
-		if (count == -1) {app.scheduleNotifs();app.renderLastPage(lastPage[0], count);app.scheduledNotifs();}
+	if (count == -1) {
+		app.scheduleNotifs();
+		app.renderLastPage(lastPage[0], count);
+		app.scheduledNotifs();
+	}
 	//     //Identify the next question to populate the view
 	//		//the next statement is about the snooze function
 	// 		//This statement says that if the participant says they are currently unable to complete the questionnaire now,
 	// 		//the app will display the snooze end of survey message. You can customize the snooze function in Stage 4 of Customization
-		else if (count == SNOOZEQ && response == 0) {app.renderLastPage(lastPage[1], count);}
+	else if (count == SNOOZEQ && response == 0) {
+		app.renderLastPage(lastPage[1], count);
+	}
 	// 		//The statement below tells the survey under what conditions should participants be shown one branch of the questionnaire as opposed to the other
 	// 		//Remember each question logic requires at least two lines of code
 	// 		//Replace X with the question number where the questionnaire splits into two branches
@@ -432,14 +442,14 @@ recordResponse: function(button, count, type) {
 		// ########
 		// REFACTOR
 		// ########
-		else if (count == 6 & response < 10 && response == 2) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(10);});}
-		else if (count == 6 & response < 10 && response == 1) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(7);});}
-		else if (count == 10 & response < 10 && response == 2) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(14);});}
-		else if (count == 10 & response < 10 && response == 1) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(11);});}
-		else if (count == 14 & response < 10 && response == 2) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(16);});}
-		else if (count == 14 & response < 10 && response == 1) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(15);});}
-		else if (count == 16 & response < 10 && response == 2) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(18);});}
-		else if (count == 16 & response < 10 && response == 1) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(17);});}
+	else if (count == 6 & response < 10 && response == 2) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(10);});}
+	else if (count == 6 & response < 10 && response == 1) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(7);});}
+	else if (count == 10 & response < 10 && response == 2) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(14);});}
+	else if (count == 10 & response < 10 && response == 1) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(11);});}
+	else if (count == 14 & response < 10 && response == 2) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(16);});}
+	else if (count == 14 & response < 10 && response == 1) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(15);});}
+	else if (count == 16 & response < 10 && response == 2) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(18);});}
+	else if (count == 16 & response < 10 && response == 1) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(17);});}
 	// 		//The next two statements illustrate the structure that all other question logic statements will follow
 	// 		//They are similar to the ones regarding the absence and presence of the phenomenon, except this time the critical condition is the response chosen
 	// 		//The first statement says if the question number is X and the response is less than Y, display question number Z
@@ -455,8 +465,15 @@ recordResponse: function(button, count, type) {
 	// 		//Uncomment the "/*else*/" below only when customizing question logic (Stage 3), so that the app will just proceed to the next question in the JSON database
 	// 		//DO NOT uncomment the "/*else*/" below when testing whether questions are being displayed in the right format (Stage 1) OR if you have no question logic
 	//in your questionnaire
-		else if (count < surveyQuestions.length-1) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(count+1);});}
-		else {app.renderLastPage(lastPage[0], count);};
+	else if (count < surveyQuestions.length-1) {
+		$("#question").fadeOut(400, function () {
+			$("#question").html("");
+			app.renderQuestion(count+1);
+		});
+	}
+	else {
+		app.renderLastPage(lastPage[0], count);
+	};
 },
 
 
