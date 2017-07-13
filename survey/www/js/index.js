@@ -318,7 +318,7 @@ renderLastPage: function(pageData, question_index) {
 	// at the end of each day
 	// The time stamp created here will also be used to create an end time for your restructured data
 	else {
-		localStore[uniqueKey + '.' + "completed" + "_" + "completedSurvey"  + "_" + getCurrentDate()] = 1;	
+		localStore[uniqueKey + '.' + "completed" + "_" + "completedSurvey"  + "_" + getDateString()] = 1;
 		app.saveDataLastPage();
 	}
 },
@@ -337,7 +337,7 @@ init: function() {
 	else {
 		uniqueKey = new Date().getTime();
 		localStore.uniqueKey = uniqueKey;
-		localStore[uniqueKey + "_" + "startTime"  + "_" + getCurrentDate()] = 1;
+		localStore[uniqueKey + "_" + "startTime"  + "_" + getDateString()] = 1;
 		app.renderQuestion(0);
 	}
 	localStore.snoozed = 0;
@@ -402,7 +402,7 @@ recordResponse: function(button, count, type) {
 		uniqueRecord = currentQuestion
 	}
 	else {
-		uniqueRecord = uniqueKey + "_" + currentQuestion + "_" + getCurrentDate();
+		uniqueRecord = uniqueKey + "_" + currentQuestion + "_" + getDateString();
 	}
 	// Save this to local storage
 	localStore[uniqueRecord] = response;
@@ -501,7 +501,7 @@ sampleParticipant: function() {
 	if ((current_time - localStore.pause_time) > X || localStore.snoozed == 1) {
 		uniqueKey = new Date().getTime();
 		localStore.snoozed = 0;
-		localStore[uniqueKey + "_" + "startTime"  + "_" + getCurrentDate(uniqueKey)] = 1;
+		localStore[uniqueKey + "_" + "startTime"  + "_" + getDateString(uniqueKey)] = 1;
 		app.renderQuestion(0);
 	}
 	else {

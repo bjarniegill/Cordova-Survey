@@ -1,4 +1,4 @@
-var getCurrentDate = function(timeStamp=null) {
+var getDateString = function(timeStamp=null) {
 	var date;
 	if (timeStamp) {
 		date = new Date(timeStamp);
