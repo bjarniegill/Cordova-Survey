@@ -318,9 +318,7 @@ renderLastPage: function(pageData, question_index) {
 	// at the end of each day
 	// The time stamp created here will also be used to create an end time for your restructured data
 	else {
-		var datestamp = new Date();
-		var year = datestamp.getFullYear(), month = datestamp.getMonth(), day=datestamp.getDate(), hours=datestamp.getHours(), minutes=datestamp.getMinutes(), seconds=datestamp.getSeconds(), milliseconds=datestamp.getMilliseconds();
-		localStore[uniqueKey + '.' + "completed" + "_" + "completedSurvey"  + "_" + year + "_" + month + "_" + day + "_" + hours + "_" + minutes + "_" + seconds  + "_" + milliseconds] = 1;	
+		localStore[uniqueKey + '.' + "completed" + "_" + "completedSurvey"  + "_" + getCurrentDate()] = 1;	
 		app.saveDataLastPage();
 	}
 },
@@ -339,9 +337,7 @@ init: function() {
 	else {
 		uniqueKey = new Date().getTime();
 		localStore.uniqueKey = uniqueKey;
-		var startTime = new Date(uniqueKey);
-		var syear = startTime.getFullYear(), smonth = startTime.getMonth(), sday=startTime.getDate(), shours=startTime.getHours(), sminutes=startTime.getMinutes(), sseconds=startTime.getSeconds(), smilliseconds=startTime.getMilliseconds();
-		localStore[uniqueKey + "_" + "startTime"  + "_" + syear + "_" + smonth + "_" + sday + "_" + shours + "_" + sminutes + "_" + sseconds + "_" + smilliseconds] = 1;
+		localStore[uniqueKey + "_" + "startTime"  + "_" + getCurrentDate()] = 1;
 		app.renderQuestion(0);
 	}
 	localStore.snoozed = 0;
@@ -357,9 +353,6 @@ recordResponse: function(button, count, type) {
  */
 	// Uncomment up to "localStore[uniqueRecord] = response;" to test whether app is recording and sending data correctly (Stage 2 of Customization)
 	// This tells ExperienceSampler how to save data from the various formats
-	// Record date (create new date object)
-	var datestamp = new Date();
-	var year = datestamp.getFullYear(), month = datestamp.getMonth(), day=datestamp.getDate(), hours=datestamp.getHours(), minutes=datestamp.getMinutes(), seconds=datestamp.getSeconds(), milliseconds=datestamp.getMilliseconds();
 	// Record value of text field
 	var response, currentQuestion, uniqueRecord;
 	if (type == 'text') {
@@ -409,7 +402,7 @@ recordResponse: function(button, count, type) {
 		uniqueRecord = currentQuestion
 	}
 	else {
-		uniqueRecord = uniqueKey + "_" + currentQuestion + "_" + year + "_" + month + "_" + day + "_" + hours + "_" + minutes + "_" + seconds + "_" + milliseconds;
+		uniqueRecord = uniqueKey + "_" + currentQuestion + "_" + getCurrentDate();
 	}
 	// Save this to local storage
 	localStore[uniqueRecord] = response;
@@ -508,9 +501,7 @@ sampleParticipant: function() {
 	if ((current_time - localStore.pause_time) > X || localStore.snoozed == 1) {
 		uniqueKey = new Date().getTime();
 		localStore.snoozed = 0;
-		var startTime = new Date(uniqueKey);
-		var syear = startTime.getFullYear(), smonth = startTime.getMonth(), sday=startTime.getDate(), shours=startTime.getHours(), sminutes=startTime.getMinutes(), sseconds=startTime.getSeconds(), smilliseconds=startTime.getMilliseconds();
-		localStore[uniqueKey + "_" + "startTime"  + "_" + syear + "_" + smonth + "_" + sday + "_" + shours + "_" + sminutes + "_" + sseconds + "_" + smilliseconds] = 1;
+		localStore[uniqueKey + "_" + "startTime"  + "_" + getCurrentDate(uniqueKey)] = 1;
 		app.renderQuestion(0);
 	}
 	else {
