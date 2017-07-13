@@ -121,6 +121,10 @@ onPause: function() {app.pauseEvents();},
 // The first function is used to specify how the app should display the various questions. You should note which questions 
 // should be displayed using which formats before customizing this function
 renderQuestion: function(question_index) {
+/**
+ * Handles rendering question to the display.
+ * @param {Int} question_index: Number of a question in questionList.
+ */
 	// First load the correct question from the JSON database
 	var question;
 	if (question_index < 0) {
@@ -345,6 +349,12 @@ init: function() {
   
 // Record User Responses
 recordResponse: function(button, count, type) {
+/**
+ * Handles recording user response and storing it in local store.
+ * @param {Obj}    button: Value of the response that the user gave.
+ * @param {Int}    count: Number of current question.
+ * @param {String} type: Type of question beaing answered.
+ */
 	// Uncomment up to "localStore[uniqueRecord] = response;" to test whether app is recording and sending data correctly (Stage 2 of Customization)
 	// This tells ExperienceSampler how to save data from the various formats
 	// Record date (create new date object)
