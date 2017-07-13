@@ -17,27 +17,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-/* activate localStorage */
+// Activate localStorage
 var localStore = window.localStorage;
 
-/* surveyQuestion Model (This time, written in "JSON" format to interface more cleanly with Mustache) */
-/* This is used to input the questions you would like to ask in your experience sampling questionnaire*/
+// SurveyQuestion Model (This time, written in "JSON" format to interface more cleanly with Mustache)
+// This is used to input the questions you would like to ask in your experience sampling questionnaire
 // questionList is imported from question.js
 var surveyQuestions = questionList;
 
-/*These are the messages that are displayed at the end of the questionnaire*/
+// These are the messages that are displayed at the end of the questionnaire
 var lastPage = [
-	/*input your last-page message*/
+	// input your last-page message
 	{
 		message: "End of questionnaire message"
 	},
-	/*input snooze last-page message*/
+	// input snooze last-page message
 	{
 		message: "Snooze message"
 	}
 ];
 
-/*Questions to set up participant notifications so that notifications are customized to participant's schedule*/                
+// Questions to set up participant notifications so that notifications are customized to participant's schedule
 var participantSetup = [
 	{
 		"type":"text",
@@ -66,15 +66,15 @@ var participantSetup = [
 	}
 ];
 
-/*Populate the view with data from surveyQuestion model*/
+// Populate the view with data from surveyQuestion model*/
 // Making mustache templates
-//This line determines the number of questions in your participant setup
-//Shout-out to Rebecca Grunberg for this great feature!
+// This line determines the number of questions in your participant setup
+// Shout-out to Rebecca Grunberg for this great feature!
 var NUMSETUPQS = participantSetup.length;
-//This line tells ExperienceSampler which question in surveyQuestions is the snooze question
-//If you choose not to use the snooze option, just comment it out
+// This line tells ExperienceSampler which question in surveyQuestions is the snooze question
+// If you choose not to use the snooze option, just comment it out
 var SNOOZEQ = 0;
-//This section of code creates the templates for all the question formats
+// This section of code creates the templates for all the question formats
 var questionTmpl = "<p>{{{questionText}}}</p><ul>{{{buttons}}}</ul>";
 var questionTextTmpl = "{{questionPrompt}}";
 var buttonTmpl = "<li><button id='{{id}}' value='{{value}}'>{{label}}</button></li>";
@@ -86,13 +86,13 @@ var datePickerTmpl = '<li><input id="{{id}}" data-format="DD-MM-YYYY" data-templ
 var dateAndTimePickerTmpl = '<li><input id="{{id}}" data-format="DD-MM-YYYY-HH-mm" data-template="D MMM YYYY  HH:mm" name="datetime24"><br /><br /></li><li><button type="submit" value="Enter">Enter</button></li><script>$(function(){$("input").combodate({firstItem: "name",minYear:2015, maxYear:2016});});</script>';
 var timePickerTmpl = '<li><input id="{{id}}" data-format="HH:mm" data-template="HH : mm" name="time"><br /><br /></li><li><button type="submit" value="Enter">Enter</button></li><script>$(function(){$("input").combodate({firstItem: "name"});});</script>';
 var lastPageTmpl = "<h3>{{message}}</h3>";
-//This line generates the unique key variable. You will not assign the value here, because you want it the value to change
-//with each new questionnaire
+// This line generates the unique key variable. You will not assign the value here, because you want it the value to change
+// with each new questionnaire
 var uniqueKey;
-//If you need to declare any other global variables (i.e., variables to be used in more than one function of ExperienceSampler)
-//you should declare them here. 
-//For example, you might declare your piped text variable or your question branch response variable
-//var name /*sample piped text variable*/
+// If you need to declare any other global variables (i.e., variables to be used in more than one function of ExperienceSampler)
+// you should declare them here.
+// For example, you might declare your piped text variable or your question branch response variable
+// var name /*sample piped text variable*/
 
 // #####################
 // TODO: FIX INDENTATION
@@ -121,7 +121,7 @@ onPause: function() {app.pauseEvents();},
 // The first function is used to specify how the app should display the various questions. You should note which questions 
 // should be displayed using which formats before customizing this function
 renderQuestion: function(question_index) {
-	//First load the correct question from the JSON database
+	// First load the correct question from the JSON database
 	var question;
 	if (question_index < 0) {
 		question = participantSetup[question_index + NUMSETUPQS];
@@ -134,9 +134,9 @@ renderQuestion: function(question_index) {
 	// Below is an example of how you would look for the NAME placeholder in your surveyQuestion questionPrompts
 	// and replace it with the response value that you assign to the name variable
 	// See our example app to see how you can implement this
-	/*if (questionPrompt.indexOf('NAME') >= 0) {
-		questionPrompt = questionPrompt.replace("NAME", function replacer() {return name;});
-		}*/
+	//if (questionPrompt.indexOf('NAME') >= 0) {
+	//	questionPrompt = questionPrompt.replace("NAME", function replacer() {return name;});
+	//	}
 	question.questionText = Mustache.render(questionTextTmpl, {questionPrompt: questionPrompt});
 	// Now populate the view for this question, depending on what the question type is
 	// This part of the function will render different question formats depending on the type specified
@@ -689,13 +689,13 @@ scheduleNotifs:function() {
 //var now = dateObject.getTime();
 //var dayOfWeek = dateObject.getDay(), currentHour = dateObject.getHours(), currentMinute = dateObject.getMinutes();
 
-// The next variables represent the amount of time between the end of the data collection to the start of the next one (nightlyLag), 
+// The next variables represent the amount of time between the end of the data collection to the start of the next one (nightlyLag),
 // the interval between the scheduling time and the start of the first data collection period (currentLag), the maximum amount of time
-// in the data collection period (maxInterval), and the time between until the end of the next data collection period (in our case 
+// in the data collection period (maxInterval), and the time between until the end of the next data collection period (in our case
 // dinner time; dinnerInterval)
 //var currentLag, maxInterval, dinnerInterval;
 
-// These represents the participants time values 
+// These represents the participants time values
 //var weekendDinnerTime = localStore.weekendDinnerTime.split(":");
 //var weekendWakeTime = localStore.weekendWakeTime.split(":");
 //var weekdayDinnerTime = localStore.weekdayDinnerTime.split(":");
@@ -709,7 +709,7 @@ scheduleNotifs:function() {
 
 // This is a loop that repeats this block of codes for the number of days there are in the experience sampling period
 // Replace X with the number of days in the experience sampling period (e.g., collecting data for 7 days, replace X with 7)
-// Note that iOS apps can only have 64 unique notifications, so you should keep that in mind if you are collecting data 
+// Note that iOS apps can only have 64 unique notifications, so you should keep that in mind if you are collecting data
 // for more than longer periods of time
 //     for (i = 0; i < X; i++)
 //     {
