@@ -7,3 +7,6 @@ survey/node_modules/
 survey/platforms/
 survey/plugins/
 survey/res/
+
+survey/config.xml
+

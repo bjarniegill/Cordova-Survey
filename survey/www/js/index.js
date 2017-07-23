@@ -37,20 +37,6 @@ var lastPage = [
 	}
 ];
 
-// Questions to set up participant notifications so that notifications are customized to participant's schedule
-var participantSetup = [
-	{
-		"type":"text",
-		"variableName": "participant_id",
-		"questionPrompt": "Please enter your participant ID:"
-	},
-	{
-		"type":"timePicker",
-		"variableName": "weekdayWakeTime",
-		"questionPrompt": "What time do you normally wake up on weekdays?"
-	}
-];
-
 // Populate the view with data from surveyQuestion model*/
 // Making mustache templates
 // This line determines the number of questions in your participant setup
