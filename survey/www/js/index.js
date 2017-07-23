@@ -355,18 +355,14 @@ var app = {
 			currentQuestion = button.split(",",1);
 		}
 
-		// ################################################################
-		// Should return here and rest put into a "store response" function
-		// ################################################################
-
-		if (count <= -1) {
-			uniqueRecord = currentQuestion
+		// Storing question response
+		if (currentQuestion === "participant_id") {
+			localStore["participant_id")] = response;
 		}
 		else {
 			uniqueRecord = uniqueKey + "_" + currentQuestion + "_" + getDateString();
+			localStore[uniqueRecord] = response;
 		}
-		// Save this to local storage
-		localStore[uniqueRecord] = response;
 
 		// Question Logic Statements
 		// Stage 3 of Customization
@@ -382,9 +378,9 @@ var app = {
 		if (count <= -1) {
 			console.log(uniqueRecord);
 		}
-		//		//The line below states that if the app is on the last question of participant setup, it should schedule all the notifications
-		//		//then display the default end of survey message, and then record which notifications have been scheduled.
-		//		//You will test local notifications in Stage 4 of customizing the app
+		// The line below states that if the app is on the last question of participant setup, it should schedule all the notifications
+		// then display the default end of survey message, and then record which notifications have been scheduled.
+		// You will test local notifications in Stage 4 of customizing the app
 		if (count == -1) {
 			app.scheduleNotifs();
 			app.renderLastPage(lastPage[0], count);
