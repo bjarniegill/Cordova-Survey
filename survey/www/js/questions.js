@@ -1,3 +1,47 @@
+/*
+	Question branching setup example
+	var exampleBranching = {
+		question number 1: {
+			response value nr 1 from question 1: branch question to display
+		},
+		question number 2: {
+			response value nr 1 from question 2: branch question to display,
+			response value nr 2 from question 2: branch question to display
+		}
+	};
+*/
+var questionBranching = {
+	6: {
+		1: 7,
+		2: 12,
+	},
+	10: {
+		1: 11,
+		2: 14,
+	},
+	14: {
+		1: 15,
+		2: 16,
+	},
+	16:	{
+		1: 17,
+		2: 18,
+	}
+};
+
+// Questions to set up participant notifications so that notifications are customized to participant's schedule
+var participantSetup = [
+	{
+		"type":"text",
+		"variableName": "participant_id",
+		"questionPrompt": "Please enter your participant ID:"
+	},
+	{
+		"type":"timePicker",
+		"variableName": "weekdayWakeTime",
+		"questionPrompt": "What time do you normally wake up on weekdays?"
+	}
+];
 
 /* surveyQuestion Model (This time, written in "JSON" format to interface more cleanly with Mustache) */
 /* This is used to input the questions you would like to ask in your experience sampling questionnaire*/
