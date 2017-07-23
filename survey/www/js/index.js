@@ -48,21 +48,6 @@ var participantSetup = [
 		"type":"timePicker",
 		"variableName": "weekdayWakeTime",
 		"questionPrompt": "What time do you normally wake up on weekdays?"
-	},
-	{
-		"type":"timePicker",
-		"variableName": "weekdaySleepTime",
-		"questionPrompt": "What time do you normally sleep on weekdays?"
-	},
-	{
-		"type":"timePicker",
-		"variableName": "weekendWakeTime",
-		"questionPrompt": "What time do you normally wake up on weekends?"
-	},
-	{
-		"type":"timePicker",
-		"variableName": "weekendSleepTime",
-		"questionPrompt": "What time do you normally eat go to sleep on weekends?"
 	}
 ];
 
@@ -94,9 +79,6 @@ var uniqueKey;
 // For example, you might declare your piped text variable or your question branch response variable
 // var name /*sample piped text variable*/
 
-// #####################
-// TODO: FIX INDENTATION
-// #####################
 var app = {
 	// Application Constructor
 	initialize: function() {
@@ -113,9 +95,31 @@ var app = {
 		app.init();
 	},
 
-	onResume: function() {app.sampleParticipant();},
+	onResume: function() { app.sampleParticipant(); },
 
-	onPause: function() {app.pauseEvents();},
+	onPause: function() { app.pauseEvents(); },
+
+	// Initialize the whole thing
+	init: function() {
+		localStore.clear()
+		// First, we assign a value to the unique key when we initialize ExperienceSampler
+		uniqueKey = new Date().getTime();
+		// The statement below states that if there is no participant id or if the participant id is left blank,
+		// ExperienceSampler would present the participant set up questions
+		if (localStore.participant_id === " " || !localStore.participant_id || localStore.participant_id == "undefined") {
+			app.renderQuestion(-NUMSETUPQS);
+			// ####################
+			// CREATE SCHEDULE HERE
+			// ####################
+		}
+		// otherwise ExperienceSampler should just save the unique key and display the first question in survey questions
+		else {
+			localStore.uniqueKey = uniqueKey;
+			localStore[uniqueKey + "_" + "startTime"  + "_" + getDateString()] = 1;
+			app.renderQuestion(0);
+		}
+		localStore.snoozed = 0;
+	},
 
 	// Beginning our app functions
 	// The first function is used to specify how the app should display the various questions. You should note which questions
@@ -124,24 +128,16 @@ var app = {
 	/**
 	 * Handles rendering question to the display.
 	 * @param {Int} question_index: Number of a question in questionList.
+	 * @param {Dict} questionDict: Stores a dictionary with questions.
 	 */
-		// First load the correct question from the JSON database
 		var question;
-		if (question_index < 0) {
+		if (question_index <= -1) {
 			question = participantSetup[question_index + NUMSETUPQS];
 		}
 		else {
 			question = surveyQuestions[question_index];
 		}
 		var questionPrompt = question.questionPrompt;
-		// If you want to include piped text in your question wording, you would implement it in this section.
-		// Below is an example of how you would look for the NAME placeholder in your surveyQuestion questionPrompts
-		// and replace it with the response value that you assign to the name variable
-		// See our example app to see how you can implement this
-		//if (questionPrompt.indexOf('NAME') >= 0) {
-		//	questionPrompt = questionPrompt.replace("NAME", function replacer() {return name;});
-		//	}
-		question.questionText = Mustache.render(questionTextTmpl, {questionPrompt: questionPrompt});
 		// Now populate the view for this question, depending on what the question type is
 		// This part of the function will render different question formats depending on the type specified
 		// Another shout-out to Rebecca Grunberg for this amazing improvement to ExperienceSampler
@@ -151,12 +147,6 @@ var app = {
 				var label_count = 0;
 				for (var i = question.minResponse; i <= question.maxResponse; i++) {
 					var label = question.labels[label_count++].label;
-					// If you want to implement piped text in your wording choice, you would place it here
-					// Below is an example of how you would look for the NAME placeholder in your surveyQuestion labels
-					// and replace it with
-					//if (label.indexOf('NAME') >= 0){
-					//	label = label.replace("NAME", function replacer() {return name;});
-					//}
 					question.buttons += Mustache.render(
 						buttonTmpl,
 						{
@@ -323,28 +313,6 @@ var app = {
 		}
 	},
 
-	// Initialize the whole thing
-	init: function() {
-		localStore.clear()
-		// First, we assign a value to the unique key when we initialize ExperienceSampler
-		uniqueKey = new Date().getTime();
-		// The statement below states that if there is no participant id or if the participant id is left blank,
-		// ExperienceSampler would present the participant set up questions
-		if (localStore.participant_id === " " || !localStore.participant_id || localStore.participant_id == "undefined") {
-			app.renderQuestion(-NUMSETUPQS);
-			// ####################
-			// CREATE SCHEDULE HERE
-			// ####################
-		}
-		// otherwise ExperienceSampler should just save the unique key and display the first question in survey questions
-		else {
-			localStore.uniqueKey = uniqueKey;
-			localStore[uniqueKey + "_" + "startTime"  + "_" + getDateString()] = 1;
-			app.renderQuestion(0);
-		}
-		localStore.snoozed = 0;
-	},
-
 	// Record User Responses
 	recordResponse: function(button, count, type) {
 	/**
@@ -400,6 +368,10 @@ var app = {
 			response = button.split(/,(.+)/)[1];
 			currentQuestion = button.split(",",1);
 		}
+
+		// ################################################################
+		// Should return here and rest put into a "store response" function
+		// ################################################################
 
 		if (count <= -1) {
 			uniqueRecord = currentQuestion
@@ -485,8 +457,6 @@ var app = {
 		};
 	},
 
-
-
 	// Prepare for Resume and Store Data
 	// Time stamps the current moment to determine how to resume
 	pauseEvents: function() {
@@ -523,12 +493,15 @@ var app = {
 			data: localStore,
 			crossDomain: true,
 			success: function (result) {
-				var pid = localStore.participant_id, snoozed = localStore.snoozed, uniqueKey = localStore.uniqueKey, pause_time=localStore.pause_time;
+				var pid = localStore.participant_id;
+				var snoozed = localStore.snoozed;
+				var uniqueKey = localStore.uniqueKey;
+				var pause_time = localStore.pause_time;
 				localStore.clear();
 				localStore.participant_id = pid;
 				localStore.snoozed = snoozed;
 				localStore.uniqueKey = uniqueKey;
-				localStore.pause_time=pause_time;
+				localStore.pause_time = pause_time;
 				$("#question").html("<h3>Your responses have been recorded. Thank you for completing this survey.</h3>");
 			},
 
@@ -550,7 +523,9 @@ var app = {
 			data: localStore,
 			crossDomain: true,
 			success: function (result) {
-				var pid = localStore.participant_id, snoozed = localStore.snoozed, uniqueKey = localStore.uniqueKey;
+				var pid = localStore.participant_id
+				var snoozed = localStore.snoozed;
+				var uniqueKey = localStore.uniqueKey;
 				localStore.clear();
 				localStore.participant_id = pid;
 				localStore.snoozed = snoozed;
