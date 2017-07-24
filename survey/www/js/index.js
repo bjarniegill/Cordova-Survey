@@ -357,7 +357,7 @@ var app = {
 
 		// Storing question response
 		if (currentQuestion === "participant_id") {
-			localStore["participant_id")] = response;
+			localStore["participant_id"] = response;
 		}
 		else {
 			uniqueRecord = uniqueKey + "_" + currentQuestion + "_" + getDateString();
