@@ -22,8 +22,10 @@ var localStore = window.localStorage;
 
 // SurveyQuestion Model (This time, written in "JSON" format to interface more cleanly with Mustache)
 // This is used to input the questions you would like to ask in your experience sampling questionnaire
-// questionList is imported from question.js
+// imported from questions.js
 var surveyQuestions = questionList;
+var participantSetup = participantSetupList;
+var surveyBranchingQuestions = questionBranchingList;
 
 // These are the messages that are displayed at the end of the questionnaire
 var lastPage = [
@@ -66,6 +68,9 @@ var uniqueKey;
 // var name /*sample piped text variable*/
 
 var app = {
+
+	isSetup: false,
+
 	// Application Constructor
 	initialize: function() {
 		this.bindEvents();
@@ -93,7 +98,9 @@ var app = {
 		// The statement below states that if there is no participant id or if the participant id is left blank,
 		// ExperienceSampler would present the participant set up questions
 		if (localStore.participant_id === " " || !localStore.participant_id || localStore.participant_id == "undefined") {
-			app.renderQuestion(-NUMSETUPQS);
+			app.isSetup = true;
+			app.renderQuestion(0);
+			//app.scheduleNotifs();
 			// ####################
 			// CREATE SCHEDULE HERE
 			// ####################
@@ -117,13 +124,14 @@ var app = {
 	 * @param {Dict} questionDict: Stores a dictionary with questions.
 	 */
 		var question;
-		if (question_index <= -1) {
-			question = participantSetup[question_index + NUMSETUPQS];
+		if (app.isSetup) {
+			question = participantSetup[question_index];
 		}
 		else {
 			question = surveyQuestions[question_index];
 		}
 		var questionPrompt = question.questionPrompt;
+		question.questionText = Mustache.render(questionTextTmpl, {questionPrompt: questionPrompt});
 		// Now populate the view for this question, depending on what the question type is
 		// This part of the function will render different question formats depending on the type specified
 		// Another shout-out to Rebecca Grunberg for this amazing improvement to ExperienceSampler
@@ -364,71 +372,15 @@ var app = {
 			localStore[uniqueRecord] = response;
 		}
 
-		// Question Logic Statements
-		// Stage 3 of Customization
-		// if your questionnaire has two branches based on the absence or presence of a phenomenon, you will need the next statement
-		// this statement allows you to record whether the phenomenon was absent or present so you can specify which branch the participant should complete when
-		// the questionnaire splits into the two branches
-		// if not then you do not need the next statement and should leave it commented out
-		//if (count == 0) {phenomenonPresence = response;}
-		// if you have piped text, you would assign your response variable here
-		// where X is the question index number of the question you ask for response you would like to pipe
-		// In this example, we just use name to consist with our earlier variables
-				//if (count ==6) {name = response;}
-		if (count <= -1) {
-			console.log(uniqueRecord);
+		var currentQuestionList;
+		if (app.isSetup) {
+			currentQuestionList = participantSetup;
 		}
-		// The line below states that if the app is on the last question of participant setup, it should schedule all the notifications
-		// then display the default end of survey message, and then record which notifications have been scheduled.
-		// You will test local notifications in Stage 4 of customizing the app
-		if (count == -1) {
-			app.scheduleNotifs();
-			app.renderLastPage(lastPage[0], count);
-			app.scheduledNotifs();
+		else {
+			currentQuestionList = surveyQuestions;
 		}
-		// Identify the next question to populate the view
-		// the next statement is about the snooze function
-		// This statement says that if the participant says they are currently unable to complete the questionnaire now,
-		// the app will display the snooze end of survey message. You can customize the snooze function in Stage 4 of Customization
-		else if (count == SNOOZEQ && response == 0) {
-			app.renderLastPage(lastPage[1], count);
-		}
-		// The statement below tells the survey under what conditions should participants be shown one branch of the questionnaire as opposed to the other
-		// Remember each question logic requires at least two lines of code
-		// Replace X with the question number where the questionnaire splits into two branches
-		// Replace Y with the response associated with the presence of the phenomenon and A with the number of the question participants should be presented with
-		// Replace Z with the response associated with the absence of the phenomenon and B with the number of the question participants should be presented with
-		// The code that preceded the app.renderQuestion function is just telling ExperienceSampler that the previous question should fade out
-		// You can choose not implement this feature; however, we have made the question fade in feature a default function of ExperienceSampler (another shout-out to
-		// to Rebecca Grunberg for the great idea), and it looks more aesthetically pleasing if the fade in is accompanied by a fade out
-		// phenomenonPresence
-		// ########
-		// REFACTOR
-		// ########
-		else if (count == 6 & response < 10 && response == 2) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(10);});}
-		else if (count == 6 & response < 10 && response == 1) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(7);});}
-		else if (count == 10 & response < 10 && response == 2) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(14);});}
-		else if (count == 10 & response < 10 && response == 1) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(11);});}
-		else if (count == 14 & response < 10 && response == 2) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(16);});}
-		else if (count == 14 & response < 10 && response == 1) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(15);});}
-		else if (count == 16 & response < 10 && response == 2) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(18);});}
-		else if (count == 16 & response < 10 && response == 1) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(17);});}
-		// The next two statements illustrate the structure that all other question logic statements will follow
-		// They are similar to the ones regarding the absence and presence of the phenomenon, except this time the critical condition is the response chosen
-		// The first statement says if the question number is X and the response is less than Y, display question number Z
-		// In that statement, replace X with the question number where the question logic occurs, Y with the specific response value that will trigger the question logic,
-		// and Z with the question number that should be displayed if response Y is chosen
-		// The second statement, says if the question number is X and the response is not equal to Y, display question number A
-		// Remember that to do question logic for one question, you need to have AT LEAST two conditional statements about what to do if the trigger response is chosen, AND
-		// what to do if the trigger response is NOT chosen.
-		// else if (count == X && response == Y) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(Z);});}
-		// else if (count == X && response !== Y) {$("#question").fadeOut(400, function () {$("#question").html("");app.renderQuestion(A);});}
 
-
-		// Uncomment the "/*else*/" below only when customizing question logic (Stage 3), so that the app will just proceed to the next question in the JSON database
-		// DO NOT uncomment the "/*else*/" below when testing whether questions are being displayed in the right format (Stage 1) OR if you have no question logic
-		// in your questionnaire
-		else if (count < surveyQuestions.length-1) {
+		if (count < currentQuestionList.length-1) {
 			$("#question").fadeOut(400, function () {
 				$("#question").html("");
 				app.renderQuestion(count+1);
@@ -437,6 +389,7 @@ var app = {
 		else {
 			app.renderLastPage(lastPage[0], count);
 		};
+		app.isSetup = False;
 	},
 
 	// Prepare for Resume and Store Data
@@ -453,7 +406,7 @@ var app = {
 		// change X to the amount of time the participant is locked out of the app for in milliseconds
 		// e.g., if you want to lock the participant out of the app for 10 minutes, replace X with 600000
 		// If you don't have a snooze feature, remove the "|| localStore.snoozed == 1"
-		if ((current_time - localStore.pause_time) > X || localStore.snoozed == 1) {
+		if ((current_time - localStore.pause_time) > 0 || localStore.snoozed == 1) {
 			uniqueKey = new Date().getTime();
 			localStore.snoozed = 0;
 			localStore[uniqueKey + "_" + "startTime"  + "_" + getDateString(uniqueKey)] = 1;
