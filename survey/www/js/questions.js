@@ -1,36 +1,44 @@
 /*
-	Question branching setup example
+	Question branching setup example.
+	example of a key: 2:1_1
+	first number: number of question
+	second number: value of answer from question
+	third number: value of branch answer
+
 	var exampleBranching = {
-		question number 1: {
-			response value nr 1 from question 1: branch question to display
+		"2:1: {
+			"type":"text",
+			"variableName": "participant_id",
+			"questionPrompt": "Please enter your participant ID:"
 		},
-		question number 2: {
-			response value nr 1 from question 2: branch question to display,
-			response value nr 2 from question 2: branch question to display
+		if branched question is answered with 1 then this question will be triggered
+		"2:1_1: {
+			"type":"text",
+			"variableName": "participant_id",
+			"questionPrompt": "Please enter your participant ID:"
 		}
-	};
-*/
-var questionBranching = {
-	6: {
-		1: 7,
-		2: 12,
-	},
-	10: {
-		1: 11,
-		2: 14,
-	},
-	14: {
-		1: 15,
-		2: 16,
-	},
-	16:	{
-		1: 17,
-		2: 18,
 	}
+*/
+var questionBranchingList = {
+	"2:1": {
+		"type":"mult1",
+		"variableName": "Seventeen",
+		"questionPrompt": "Hversu neikvæður fannst þér atburðurinn vera?",
+		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
+		"labels": [
+			{"label": "1 Örlítið"},
+			{"label": "2 Dálítið"},
+			{"label": "3 Nokkuð"},
+			{"label": "4 Mikið"},
+			{"label": "5 Mjög mikið"}
+		],
+	}
+
 };
 
 // Questions to set up participant notifications so that notifications are customized to participant's schedule
-var participantSetup = [
+var participantSetupList = [
 	{
 		"type":"text",
 		"variableName": "participant_id",
