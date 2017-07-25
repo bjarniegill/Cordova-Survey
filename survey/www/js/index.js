@@ -98,7 +98,7 @@ var app = {
 		// The statement below states that if there is no participant id or if the participant id is left blank,
 		// ExperienceSampler would present the participant set up questions
 		if (localStore.participant_id === " " || !localStore.participant_id || localStore.participant_id == "undefined") {
-			app.isSetup = true;
+			app.isSetup = false;
 			app.renderQuestion(0);
 			//app.scheduleNotifs();
 			// ####################
@@ -126,6 +126,9 @@ var app = {
 		var question;
 		if (app.isSetup) {
 			question = participantSetup[question_index];
+		}
+		else if (typeof question_index === 'string' || question_index instanceof String) {
+			question = questionBranchingList[question_index];
 		}
 		else {
 			question = surveyQuestions[question_index];
@@ -293,7 +296,7 @@ var app = {
 			app.saveData();
 		}*/
 		// If you choose to implement the snooze function, uncomment the else in the statement below
-		/*else*/ if ( question_index == -1) {
+		/*else*/ if (app.isSetup) {
 			app.saveDataLastPage();
 		}
 		// This part of the code says that if the participant has completed the entire questionnaire,
@@ -373,23 +376,37 @@ var app = {
 		}
 
 		var currentQuestionList;
+		var branchingQuestion
 		if (app.isSetup) {
 			currentQuestionList = participantSetup;
 		}
 		else {
 			currentQuestionList = surveyQuestions;
+			branchingQuestion = getBranchingQuestion(count, response, surveyBranchingQuestions);
 		}
 
-		if (count < currentQuestionList.length-1) {
+		
+		if (branchingQuestion) {
 			$("#question").fadeOut(400, function () {
 				$("#question").html("");
-				app.renderQuestion(count+1);
+				app.renderQuestion(branchingQuestion);
 			});
 		}
 		else {
-			app.renderLastPage(lastPage[0], count);
-		};
-		app.isSetup = False;
+			if (typeof count === 'string' || count instanceof String) {
+				count = recoverFromBranching(count);
+			}
+			if (count < currentQuestionList.length-1) {
+				$("#question").fadeOut(400, function () {
+					$("#question").html("");
+					app.renderQuestion(count+1);
+				});
+			}
+			else {
+				app.renderLastPage(lastPage[0], count);
+			}
+		}
+		app.isSetup = false;
 	},
 
 	// Prepare for Resume and Store Data
