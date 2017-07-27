@@ -98,12 +98,9 @@ var app = {
 		// The statement below states that if there is no participant id or if the participant id is left blank,
 		// ExperienceSampler would present the participant set up questions
 		if (localStore.participant_id === " " || !localStore.participant_id || localStore.participant_id == "undefined") {
-			app.isSetup = false;
+			app.isSetup = true;
 			app.renderQuestion(0);
-			//app.scheduleNotifs();
-			// ####################
-			// CREATE SCHEDULE HERE
-			// ####################
+			app.scheduleNotifs();
 		}
 		// otherwise ExperienceSampler should just save the unique key and display the first question in survey questions
 		else {
@@ -403,10 +400,10 @@ var app = {
 				});
 			}
 			else {
+				app.isSetup = false;
 				app.renderLastPage(lastPage[0], count);
 			}
 		}
-		app.isSetup = false;
 	},
 
 	// Prepare for Resume and Store Data
@@ -492,22 +489,38 @@ var app = {
 	// This code is for a interval-contingent design where all participants answer the questionnaire at the same time
 	// (i.e., not customized to their schedule)
 	scheduleNotifs:function() {
+		var millisecondTimeBuffer = Math.floor((SURVEY_TIME_BUFFER * 60000) / 2);
+		var baseTime = getSurveyStartBaseTime();
+		var dailyTimeSpan = getDailyTimeSpan();
+
+		var timeSpanInterval = Math.floor(dailyTimeSpan / SURVEYS_DONE_PER_DAY);
+
 		for (var day = 0; day < SURVEY_DURATION_IN_DAYS; day++) {
-			for (var interval; interval < SURVEYS_DONE_PER_DAY; interval++) {
+			for (var interval = 0; interval < SURVEYS_DONE_PER_DAY; interval++) {
+				var timeIntervalStart = interval * timeSpanInterval;
+				var timeInteralEnd = (interval * timeSpanInterval) + timeSpanInterval;
 
+				timeIntervalStart += millisecondTimeBuffer;
+				timeInteralEnd -= millisecondTimeBuffer;
 
-		cordova.plugins.notification.local.schedule({
-			icon: 'ic_launcher',
-			id: a,
-			at: date1,
-			text: SURVEY_SCHEDULE_DISPLAY_MESSAGE,
-			title: SURVEY_SCHEDULE_TITLE_MESSAGE
-		});
+				randomTime = getRandomArbitrary(timeIntervalStart, timeInteralEnd);
 
-			// Section 5 - Recording notifications
-			// Now you want to record your notifications to make sure that they have been scheduled
-			// You can also calculate response latencies if you with these values later if you want
-		localStore['notification_' + a] = localStore.participant_id + "_" + a + "_" + date1;
+				var scheduledSurveyDate = new Date(baseTime.getTime());
+				scheduledSurveyDate.setDate(baseTime.getDate() + day);
+				var randomisedSurveyDate = new Date(scheduledSurveyDate.getTime() + randomTime);
+				console.log(randomisedSurveyDate.toString());
+				
+				var surveyScheduleId = (day * 100) + interval;
+				cordova.plugins.notification.local.schedule({
+					icon: 'ic_launcher',
+					id: surveyScheduleId,
+					at: randomisedSurveyDate,
+					text: SURVEY_SCHEDULE_DISPLAY_MESSAGE,
+					title: SURVEY_SCHEDULE_TITLE_MESSAGE + randomisedSurveyDate
+				});
+				localStore['notification_' + surveyScheduleId] = localStore.participant_id + "_" + surveyScheduleId + "_" + randomisedSurveyDate;
+			}
+		}
 	},
 
 
