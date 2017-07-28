@@ -84,7 +84,7 @@ var app = {
 
 	// Initialize the whole thing
 	init: function() {
-		localStore.clear()
+		//localStore.clear()
 		// The statement below states that if there is no participant id or if the participant id is left blank,
 		// ExperienceSampler would present the participant set up questions
 		if (localStore.participant_id === " " || !localStore.participant_id || localStore.participant_id == "undefined") {
@@ -438,8 +438,8 @@ var app = {
 		safeAddPartisipantDataToLocalStore(localStore, 'uniqueKey', localStore.uniqueKey);
 		 $.ajax({
 			type: SURVEY_DATA_SAVE_PROTOCOL,
-			url: 'https://script.google.com/macros/s/AKfycbxqiKfNSZxNAtQ0JJ2ujCqjZIOnSYiLMXOBOB82Y_ySxiqxWFLE/exec',
-			data: localStore[SURVEY_DATA_STORAGE_NAME],
+			url: SURVEY_DATA_SAVE_URL,
+			data: JSON.parse(localStore[SURVEY_DATA_STORAGE_NAME]),
 			crossDomain: true,
 			success: function (result) {
 				delete localStore[SURVEY_DATA_STORAGE_NAME];
@@ -459,8 +459,8 @@ var app = {
 		safeAddPartisipantDataToLocalStore(localStore, 'uniqueKey', localStore.uniqueKey);
 		$.ajax({
 			type: SURVEY_DATA_SAVE_PROTOCOL,
-			url: 'https://script.google.com/macros/s/AKfycbxqiKfNSZxNAtQ0JJ2ujCqjZIOnSYiLMXOBOB82Y_ySxiqxWFLE/exec',
-			data: localStore[SURVEY_DATA_STORAGE_NAME],
+			url: SURVEY_DATA_SAVE_URL,
+			data: JSON.parse(localStore[SURVEY_DATA_STORAGE_NAME]),
 			crossDomain: true,
 			success: function (result) {
 				delete localStore[SURVEY_DATA_STORAGE_NAME];

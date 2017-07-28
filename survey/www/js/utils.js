@@ -67,7 +67,6 @@ var getRandomArbitrary = function(min, max) {
 
 var partisipantCanAnswer = function(scheduleTimes) {
 	for (var i = 0; i < scheduleTimes.length; i++) {
-		return scheduleTimes[0];
 		var startTime = scheduleTimes[i];
 		var currentTime = new Date().getTime();
 		var endTime = startTime + (SURVEY_TIME_ALLOWED_TO_ANSWER * 60000);
@@ -80,10 +79,15 @@ var partisipantCanAnswer = function(scheduleTimes) {
 }
 
 var safeAddPartisipantDataToLocalStore = function(storage, key, value) {
-	if ( ! storage.hasOwnProperty(SURVEY_DATA_STORAGE_NAME)) {
-		storage[SURVEY_DATA_STORAGE_NAME] = {};
+	var tmpStorage;
+	if (storage.hasOwnProperty(SURVEY_DATA_STORAGE_NAME)) {
+		tmpStorage = JSON.parse(storage[SURVEY_DATA_STORAGE_NAME]);
 	}
-	storage[SURVEY_DATA_STORAGE_NAME][key] = value;
+	else {
+		tmpStorage = {};
+	}
+	tmpStorage[key] = value
+	storage[SURVEY_DATA_STORAGE_NAME] = JSON.stringify(tmpStorage);
 }
 
 var safeGetIntFromLocalStorage = function(value) {

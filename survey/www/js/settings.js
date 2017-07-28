@@ -6,10 +6,10 @@ const SURVEYS_DONE_PER_DAY = 2;
 // in days
 const SURVEY_WAIT_PERIOD_BEFOR_START = 0;
 // 24 hour format(int)
-const SURVEY_START_HOUR = 2;
-const SURVEY_START_MINUTE = 19;
-const SURVEY_END_HOUR = 2;
-const SURVEY_END_MINUTE = 21;
+const SURVEY_START_HOUR = 17;
+const SURVEY_START_MINUTE = 36;
+const SURVEY_END_HOUR = 17;
+const SURVEY_END_MINUTE = 38;
 // To prevent surveys from overlaping due to the random
 // factor, it might be a good idea to set a time buffer
 // that reduces the chance of another survey starting before
@@ -34,7 +34,9 @@ const SURVEY_DATA_STORAGE_NAME = 'survey_data';
 // ####################
 // If you are using the google option, the type should be 'get'
 // If you are using the server option, the type should be 'post'
-const SURVEY_DATA_SAVE_PROTOCOL = 'get'
+const SURVEY_DATA_SAVE_PROTOCOL = 'get';
+// Be aware that this url also needs to go into index.html in the top meta tag
+const SURVEY_DATA_SAVE_URL = "https://script.google.com/macros/s/AKfycbze3LDQEa32kdodAUwHjMMp1HgAQTXjaYtGd6Bj7giFFjEyHkR_/exec";
 
 
 // millisec
