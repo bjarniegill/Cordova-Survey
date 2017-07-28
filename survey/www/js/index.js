@@ -31,22 +31,14 @@ var surveyBranchingQuestions = questionBranchingList;
 var lastPage = [
 	// input your last-page message
 	{
-		message: "End of questionnaire message"
+		message: "End of questionnaire message."
 	},
 	// input snooze last-page message
 	{
-		message: "Snooze message"
+		message: "You have no surveys at this time, or time has expired."
 	}
 ];
 
-// Populate the view with data from surveyQuestion model*/
-// Making mustache templates
-// This line determines the number of questions in your participant setup
-// Shout-out to Rebecca Grunberg for this great feature!
-var NUMSETUPQS = participantSetup.length;
-// This line tells ExperienceSampler which question in surveyQuestions is the snooze question
-// If you choose not to use the snooze option, just comment it out
-var SNOOZEQ = 0;
 // This section of code creates the templates for all the question formats
 var questionTmpl = "<p>{{{questionText}}}</p><ul>{{{buttons}}}</ul>";
 var questionTextTmpl = "{{questionPrompt}}";
@@ -92,23 +84,21 @@ var app = {
 
 	// Initialize the whole thing
 	init: function() {
-		localStore.clear()
-		// First, we assign a value to the unique key when we initialize ExperienceSampler
-		uniqueKey = new Date().getTime();
+		//localStore.clear()
 		// The statement below states that if there is no participant id or if the participant id is left blank,
 		// ExperienceSampler would present the participant set up questions
 		if (localStore.participant_id === " " || !localStore.participant_id || localStore.participant_id == "undefined") {
+			uniqueKey = new Date().getTime();
 			app.isSetup = true;
+			localStore['current_schedule'] = undefined;
+			localStore['current_question'] = 0;
 			app.renderQuestion(0);
-			app.scheduleNotifs();
+			app.scheduleNotifs();	
 		}
-		// otherwise ExperienceSampler should just save the unique key and display the first question in survey questions
 		else {
-			localStore.uniqueKey = uniqueKey;
-			localStore[uniqueKey + "_" + "startTime"  + "_" + getDateString()] = 1;
-			app.renderQuestion(0);
+			app.sampleParticipant();
 		}
-		localStore.snoozed = 0;
+		//localStore.clear()
 	},
 
 	// Beginning our app functions
@@ -283,17 +273,7 @@ var app = {
 
 	renderLastPage: function(pageData, question_index) {
 		$("#question").html(Mustache.render(lastPageTmpl, pageData));
-		// This section should be implemented if you choose to use a snooze feature
-		// It tells ExperienceSampler that if the participant has chosen to snooze the app,
-		// the app should save a snooze value of 1 (this value will be used to reset the unique key, so that
-		// this data is does not have the same unique key as the subsequent questionnaire)
-		/*if ( question_index == SNOOZEQ ) {
-			app.snoozeNotif();
-			localStore.snoozed = 1;
-			app.saveData();
-		}*/
-		// If you choose to implement the snooze function, uncomment the else in the statement below
-		/*else*/ if (app.isSetup) {
+		if (app.isSetup) {
 			app.saveDataLastPage();
 		}
 		// This part of the code says that if the participant has completed the entire questionnaire,
@@ -302,7 +282,18 @@ var app = {
 		// at the end of each day
 		// The time stamp created here will also be used to create an end time for your restructured data
 		else {
-			localStore[uniqueKey + '.' + "completed" + "_" + "completedSurvey"  + "_" + getDateString()] = 1;
+			safeAddPartisipantDataToLocalStore(
+				localStore,
+				uniqueKey + '.' + "completed" + "_" + "completedSurvey"  + "_" + getDateString(),
+				1
+			);
+			app.saveDataLastPage();
+		}
+	},
+
+	renderNoCurrentSurveyPage: function(pageData) {
+		$("#question").html(Mustache.render(lastPageTmpl, lastPage[1]));
+		if (local[SURVEY_DATA_STORAGE_NAME]) {
 			app.saveDataLastPage();
 		}
 	},
@@ -369,7 +360,11 @@ var app = {
 		}
 		else {
 			uniqueRecord = uniqueKey + "_" + currentQuestion + "_" + getDateString();
-			localStore[uniqueRecord] = response;
+			safeAddPartisipantDataToLocalStore(
+				localStore,
+				uniqueRecord,
+				response
+			);
 		}
 
 		var currentQuestionList;
@@ -386,6 +381,7 @@ var app = {
 		if (branchingQuestion) {
 			$("#question").fadeOut(400, function () {
 				$("#question").html("");
+				localStore.current_question = branchingQuestion;
 				app.renderQuestion(branchingQuestion);
 			});
 		}
@@ -396,6 +392,7 @@ var app = {
 			if (count < currentQuestionList.length-1) {
 				$("#question").fadeOut(400, function () {
 					$("#question").html("");
+					localStore.current_question = count+1;
 					app.renderQuestion(count+1);
 				});
 			}
@@ -409,51 +406,45 @@ var app = {
 	// Prepare for Resume and Store Data
 	// Time stamps the current moment to determine how to resume
 	pauseEvents: function() {
-		localStore.pause_time = new Date().getTime();
 		localStore.uniqueKey = uniqueKey;
 		app.saveData();
 	},
 
 	sampleParticipant: function() {
-		var current_moment = new Date();
-		var current_time = current_moment.getTime();
-		// change X to the amount of time the participant is locked out of the app for in milliseconds
-		// e.g., if you want to lock the participant out of the app for 10 minutes, replace X with 600000
-		// If you don't have a snooze feature, remove the "|| localStore.snoozed == 1"
-		if ((current_time - localStore.pause_time) > 0 || localStore.snoozed == 1) {
-			uniqueKey = new Date().getTime();
-			localStore.snoozed = 0;
-			localStore[uniqueKey + "_" + "startTime"  + "_" + getDateString(uniqueKey)] = 1;
-			app.renderQuestion(0);
+		var scheduleEpoch = partisipantCanAnswer(JSON.parse(localStore['survey_schedules_epoch']));
+		if (scheduleEpoch) {
+			if (localStore.current_schedule !== scheduleEpoch) {
+				localStore.current_schedule = scheduleEpoch;
+				localStore.current_question = 0;
+			}
+			uniqueKey = scheduleEpoch;
+			localStore.uniqueKey = uniqueKey;
+			safeAddPartisipantDataToLocalStore(
+				localStore,
+				uniqueKey + "_" + "startTime"  + "_" + getDateString(),
+				1	
+			);
+			app.renderQuestion(safeGetIntFromLocalStorage(localStore.current_question));
 		}
 		else {
-			uniqueKey = localStore.uniqueKey;
+			app.renderNoCurrentSurveyPage()
 		}
 		app.saveData();
 	},
 
 	// uncomment this function to test data saving function (Stage 2 of Customization)
 	saveDataLastPage:function() {
+		safeAddPartisipantDataToLocalStore(localStore, 'participant_id', localStore.participant_id);
+		safeAddPartisipantDataToLocalStore(localStore, 'uniqueKey', localStore.uniqueKey);
 		 $.ajax({
-			// If you are using the google option, the type should be 'get'
-			// If you are using the server option, the type should be 'post'
-			type: 'get',
-			url: 'https://script.google.com/macros/s/AKfycbxqiKfNSZxNAtQ0JJ2ujCqjZIOnSYiLMXOBOB82Y_ySxiqxWFLE/exec',
-			data: localStore,
+			type: SURVEY_DATA_SAVE_PROTOCOL,
+			url: SURVEY_DATA_SAVE_URL,
+			data: JSON.parse(localStore[SURVEY_DATA_STORAGE_NAME]),
 			crossDomain: true,
 			success: function (result) {
-				var pid = localStore.participant_id;
-				var snoozed = localStore.snoozed;
-				var uniqueKey = localStore.uniqueKey;
-				var pause_time = localStore.pause_time;
-				localStore.clear();
-				localStore.participant_id = pid;
-				localStore.snoozed = snoozed;
-				localStore.uniqueKey = uniqueKey;
-				localStore.pause_time = pause_time;
+				delete localStore[SURVEY_DATA_STORAGE_NAME];
 				$("#question").html("<h3>Your responses have been recorded. Thank you for completing this survey.</h3>");
 			},
-
 			error: function (request, error) {
 				console.log(error);
 				$("#question").html("<h3>Please try resending data. If problems persist, please contact the researchers (uoft.dailylifestudy@gmail.com).</h3><br><button>Resend data</button>");
@@ -464,21 +455,15 @@ var app = {
 
 	// Uncomment this function to test data saving function (Stage 2 of Customization)
 	saveData:function() {
+		safeAddPartisipantDataToLocalStore(localStore, 'participant_id', localStore.participant_id);
+		safeAddPartisipantDataToLocalStore(localStore, 'uniqueKey', localStore.uniqueKey);
 		$.ajax({
-			// If you are using the google option, the type should be 'get'
-			// If you are using the server option, the type should be 'post'
-			type: 'get',
-			url: 'https://script.google.com/macros/s/AKfycbxqiKfNSZxNAtQ0JJ2ujCqjZIOnSYiLMXOBOB82Y_ySxiqxWFLE/exec',
-			data: localStore,
+			type: SURVEY_DATA_SAVE_PROTOCOL,
+			url: SURVEY_DATA_SAVE_URL,
+			data: JSON.parse(localStore[SURVEY_DATA_STORAGE_NAME]),
 			crossDomain: true,
 			success: function (result) {
-				var pid = localStore.participant_id
-				var snoozed = localStore.snoozed;
-				var uniqueKey = localStore.uniqueKey;
-				localStore.clear();
-				localStore.participant_id = pid;
-				localStore.snoozed = snoozed;
-				localStore.uniqueKey = uniqueKey;
+				delete localStore[SURVEY_DATA_STORAGE_NAME];
 			},
 			error: function (request, error) { console.log(error); }
 		});
@@ -494,6 +479,7 @@ var app = {
 		var dailyTimeSpan = getDailyTimeSpan();
 
 		var timeSpanInterval = Math.floor(dailyTimeSpan / SURVEYS_DONE_PER_DAY);
+		var surveyTimes = [];
 
 		for (var day = 0; day < SURVEY_DURATION_IN_DAYS; day++) {
 			for (var interval = 0; interval < SURVEYS_DONE_PER_DAY; interval++) {
@@ -518,27 +504,17 @@ var app = {
 					text: SURVEY_SCHEDULE_DISPLAY_MESSAGE,
 					title: SURVEY_SCHEDULE_TITLE_MESSAGE + randomisedSurveyDate
 				});
-				localStore['notification_' + surveyScheduleId] = localStore.participant_id + "_" + surveyScheduleId + "_" + randomisedSurveyDate;
+				safeAddPartisipantDataToLocalStore(
+					localStore,
+					'notification_' + surveyScheduleId,
+					localStore.participant_id + "_" + surveyScheduleId + "_" + randomisedSurveyDate
+				);
+				surveyTimes.push(randomisedSurveyDate.getTime());
 			}
 		}
+		localStore['survey_schedules_epoch'] = JSON.stringify(surveyTimes);
 	},
 
-
-	// Stage 4 of Customization
-	// Uncomment lines inside the snoozeNotif function to test the snooze scheduling notification function
-	// Replace X with the number of seconds you want the app to snooze for (e.g., 10 minutes is 600 seconds)
-	// You can also customize the Title of the message, the snooze message that appears in the notification
-	snoozeNotif:function() {
-	//     var now = new Date().getTime(), snoozeDate = new Date(now + X*1000);
-	//     var id = '99';
-	//     cordova.plugins.notification.local.schedule({
-	//                                          icon: 'ic_launcher',
-	//                                          id: id,
-	//                                          title: 'Title of message',
-	//                                          text: 'Snooze message',
-	//                                          at: snoozeDate,
-	//                                          });
-	},
 	// This function forces participants to respond to an open-ended question if they have left it blank
 	validateResponse: function(data) {
 		var text = data.val();
