@@ -57,11 +57,6 @@ var participantSetupList = [
 		"type":"text",
 		"variableName": "participant_id",
 		"questionPrompt": "Please enter your participant ID:"
-	},
-	{
-		"type":"timePicker",
-		"variableName": "weekdayWakeTime",
-		"questionPrompt": "What time do you normally wake up on weekdays?"
 	}
 ];
 

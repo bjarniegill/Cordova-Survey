@@ -64,3 +64,31 @@ var getDailyTimeSpan = function() {
 var getRandomArbitrary = function(min, max) {
 	return Math.random() * (max - min) + min;
 }
+
+var partisipantCanAnswer = function(scheduleTimes) {
+	for (var i = 0; i < scheduleTimes.length; i++) {
+		return scheduleTimes[0];
+		var startTime = scheduleTimes[i];
+		var currentTime = new Date().getTime();
+		var endTime = startTime + (SURVEY_TIME_ALLOWED_TO_ANSWER * 60000);
+		
+		if (currentTime >= startTime && currentTime <= endTime) {
+			return startTime;
+		}
+	}
+	return false;
+}
+
+var safeAddPartisipantDataToLocalStore = function(storage, key, value) {
+	if ( ! storage.hasOwnProperty(SURVEY_DATA_STORAGE_NAME)) {
+		storage[SURVEY_DATA_STORAGE_NAME] = {};
+	}
+	storage[SURVEY_DATA_STORAGE_NAME][key] = value;
+}
+
+var safeGetIntFromLocalStorage = function(value) {
+	if ( ! isNaN(value)) {
+		return parseInt(value);
+	}
+	return value;
+}
