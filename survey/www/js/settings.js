@@ -2,21 +2,21 @@
 // Time variables for schedule
 // ###########################
 const SURVEY_DURATION_IN_DAYS = 1;
-const SURVEYS_DONE_PER_DAY = 2;
+const SURVEYS_DONE_PER_DAY = 1;
 // in days
 const SURVEY_WAIT_PERIOD_BEFOR_START = 0;
 // 24 hour format(int)
-const SURVEY_START_HOUR = 17;
-const SURVEY_START_MINUTE = 36;
-const SURVEY_END_HOUR = 17;
-const SURVEY_END_MINUTE = 38;
+const SURVEY_START_HOUR = 3;
+const SURVEY_START_MINUTE = 12;
+const SURVEY_END_HOUR = 3;
+const SURVEY_END_MINUTE = 13;
 // To prevent surveys from overlaping due to the random
 // factor, it might be a good idea to set a time buffer
 // that reduces the chance of another survey starting before
 // a previous has finished.
 // minutes
 const SURVEY_TIME_BUFFER = 0;
-const SURVEY_TIME_ALLOWED_TO_ANSWER = 5;
+const SURVEY_TIME_ALLOWED_TO_ANSWER = 60;
 
 // #######################
 // Scheduling message text

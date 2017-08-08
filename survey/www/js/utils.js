@@ -1,3 +1,10 @@
+var addLeadingZero = function(value) {
+	if (value.toString().length < 2) {
+		return "0" + value;
+	}
+	return value.toString();
+}
+
 var getDateString = function(timeStamp=null) {
 	var date;
 	if (timeStamp) {
@@ -7,30 +14,22 @@ var getDateString = function(timeStamp=null) {
 		date = new Date();
 	}
 	var year = date.getFullYear();
-	var month = date.getMonth();
-	var day = date.getDate(); 
-	var hour = date.getHours(); 
-	var min = date.getMinutes(); 
-	var sec = date.getSeconds();
+	var month = addLeadingZero(date.getMonth());
+	var day = addLeadingZero(date.getDate());
+	var hour = addLeadingZero(date.getHours());
+	var min = addLeadingZero(date.getMinutes());
+	var sec = addLeadingZero(date.getSeconds());
 	var millisec = date.getMilliseconds();
 
 	return year + "_" + month + "_" + day + "_" + hour + "_" + min + "_" + sec + "_" + millisec;
 }
 
-var getBranchingQuestion = function(count, response, branchList)  {
+var getBranchingQuestionIndex = function(count, response)  {
 	var index;
 	if (typeof count === 'string' || count instanceof String) {
-		index = count + "_" + response;
-	}
-	else {
-		index = count + ":" + response;
-	}
-	if (branchList[index]) {
 		return index;
 	}
-	else {
-		return;
-	}
+	return count + ":" + response;
 }
 
 var recoverFromBranching = function(count) {
@@ -95,4 +94,21 @@ var safeGetIntFromLocalStorage = function(value) {
 		return parseInt(value);
 	}
 	return value;
+}
+
+var isBranchingQuestion = function(value) {
+	if (typeof value === 'string' || value instanceof String) {
+		if (value.indexOf(":") > -1) {
+			return true;
+		}
+	}
+	return false;
+}
+
+var fetchBranchFromQuestions = function(questionList, branchQuestion) {
+	var questionIndexValues = branchQuestion.split(":");
+	var questionNumber = questionIndexValues[0];
+	var answerValue = questionIndexValues[1];
+
+	return questionList[questionNumber].branching[answerValue].slice();
 }

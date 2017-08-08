@@ -25,7 +25,7 @@ var localStore = window.localStorage;
 // imported from questions.js
 var surveyQuestions = questionList;
 var participantSetup = participantSetupList;
-var surveyBranchingQuestions = questionBranchingList;
+var currentBranchingQuestionList;
 
 // These are the messages that are displayed at the end of the questionnaire
 var lastPage = [
@@ -38,6 +38,7 @@ var lastPage = [
 		message: "You have no surveys at this time, or time has expired."
 	}
 ];
+
 
 // This section of code creates the templates for all the question formats
 var questionTmpl = "<p>{{{questionText}}}</p><ul>{{{buttons}}}</ul>";
@@ -78,13 +79,38 @@ var app = {
 		app.init();
 	},
 
-	onResume: function() { app.sampleParticipant(); },
+	onResume: function() {
+		if (isBranchingQuestion(localStore.current_question)) {
+			if (localStore.removedBranchItems) {
+				var branchQuestions = fetchBranchFromQuestions(surveyQuestions, localStore.current_question);
+				for (var i = 0; i < parseInt(localStore.removedBranchItems); i++) {
+					branchQuestions.shift();
+				}
+			}
+		}
 
-	onPause: function() { app.pauseEvents(); },
+		currentBranchingQuestionList = branchQuestions;
+		localStore.removedBranchItems = "";
+
+		app.sampleParticipant();
+	},
+
+	onPause: function() {
+		if (isBranchingQuestion(localStore.current_question)) {
+			var questionIndexValues = localStore.current_question.split(":");
+			var questionNumber = questionIndexValues[0];
+			var answerValue = questionIndexValues[1];
+			var branchQuestions = surveyQuestions[questionNumber].branching[answerValue];
+			// one is added due to the question being removed when it is asked, not when it is answered.
+			nrOfRemovedItemsFromBranchQuestion = branchQuestions.length - (currentBranchingQuestionList.length + 1);
+			localStore.removedBranchItems = nrOfRemovedItemsFromBranchQuestion;
+		}
+		app.pauseEvents();
+	},
 
 	// Initialize the whole thing
 	init: function() {
-		//localStore.clear()
+		localStore.clear()
 		// The statement below states that if there is no participant id or if the participant id is left blank,
 		// ExperienceSampler would present the participant set up questions
 		if (localStore.participant_id === " " || !localStore.participant_id || localStore.participant_id == "undefined") {
@@ -93,12 +119,10 @@ var app = {
 			localStore['current_schedule'] = undefined;
 			localStore['current_question'] = 0;
 			app.renderQuestion(0);
-			app.scheduleNotifs();	
 		}
 		else {
 			app.sampleParticipant();
 		}
-		//localStore.clear()
 	},
 
 	// Beginning our app functions
@@ -108,14 +132,13 @@ var app = {
 	/**
 	 * Handles rendering question to the display.
 	 * @param {Int} question_index: Number of a question in questionList.
-	 * @param {Dict} questionDict: Stores a dictionary with questions.
 	 */
 		var question;
 		if (app.isSetup) {
 			question = participantSetup[question_index];
 		}
 		else if (typeof question_index === 'string' || question_index instanceof String) {
-			question = questionBranchingList[question_index];
+			question = currentBranchingQuestionList.shift()
 		}
 		else {
 			question = surveyQuestions[question_index];
@@ -368,27 +391,43 @@ var app = {
 		}
 
 		var currentQuestionList;
-		var branchingQuestion
+		var branchingQuestionIndex
 		if (app.isSetup) {
 			currentQuestionList = participantSetup;
 		}
 		else {
 			currentQuestionList = surveyQuestions;
-			branchingQuestion = getBranchingQuestion(count, response, surveyBranchingQuestions);
+			// count is a number
+			if ( ! isNaN(count)) {
+				var branch = currentQuestionList[count].branching;
+				// question has branch for given response
+				if (branch && branch.hasOwnProperty(response)) {
+					branchingQuestionIndex = getBranchingQuestionIndex(count, response);
+					currentBranchingQuestionList = branch[response].slice();
+				}
+			}
+			// count is not a number
+			else {
+				// branching has no more questions
+				if (currentBranchingQuestionList.length === 0) {
+					currentBranchingQuestionList = undefined;
+					count = recoverFromBranching(count);
+				}
+				// branching has more questions
+				else {
+					branchingQuestionIndex = count;
+				}
+			}
 		}
-
 		
-		if (branchingQuestion) {
+		if (branchingQuestionIndex) {
 			$("#question").fadeOut(400, function () {
 				$("#question").html("");
-				localStore.current_question = branchingQuestion;
-				app.renderQuestion(branchingQuestion);
+				localStore.current_question = branchingQuestionIndex;
+				app.renderQuestion(branchingQuestionIndex);
 			});
 		}
 		else {
-			if (typeof count === 'string' || count instanceof String) {
-				count = recoverFromBranching(count);
-			}
 			if (count < currentQuestionList.length-1) {
 				$("#question").fadeOut(400, function () {
 					$("#question").html("");
@@ -397,6 +436,7 @@ var app = {
 				});
 			}
 			else {
+				app.scheduleNotifs();
 				app.isSetup = false;
 				app.renderLastPage(lastPage[0], count);
 			}
@@ -413,17 +453,17 @@ var app = {
 	sampleParticipant: function() {
 		var scheduleEpoch = partisipantCanAnswer(JSON.parse(localStore['survey_schedules_epoch']));
 		if (scheduleEpoch) {
-			if (localStore.current_schedule !== scheduleEpoch) {
+			if (parseInt(localStore.current_schedule) !== scheduleEpoch) {
 				localStore.current_schedule = scheduleEpoch;
 				localStore.current_question = 0;
+				safeAddPartisipantDataToLocalStore(
+					localStore,
+					uniqueKey + "_" + "startTime"  + "_" + getDateString(),
+					1
+				);
 			}
 			uniqueKey = scheduleEpoch;
 			localStore.uniqueKey = uniqueKey;
-			safeAddPartisipantDataToLocalStore(
-				localStore,
-				uniqueKey + "_" + "startTime"  + "_" + getDateString(),
-				1	
-			);
 			app.renderQuestion(safeGetIntFromLocalStorage(localStore.current_question));
 		}
 		else {

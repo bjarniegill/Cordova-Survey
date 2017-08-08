@@ -1,56 +1,3 @@
-/*
-	Question branching setup example.
-	example of a key: 2:1_1
-	first number: number of question
-	second number: value of answer from question
-	third number: value of branch answer
-
-	var exampleBranching = {
-		"2:1: {
-			"type":"text",
-			"variableName": "participant_id",
-			"questionPrompt": "Please enter your participant ID:"
-		},
-		if branched question is answered with 1 then this question will be triggered
-		"2:1_1: {
-			"type":"text",
-			"variableName": "participant_id",
-			"questionPrompt": "Please enter your participant ID:"
-		}
-	}
-*/
-var questionBranchingList = {
-	"2:1": {
-		"type":"mult1",
-		"variableName": "Seventeen",
-		"questionPrompt": "Ertu eitthvað bömmaður?",
-		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
-		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
-		"labels": [
-			{"label": "1 Örlítið"},
-			{"label": "2 Dálítið"},
-			{"label": "3 Nokkuð"},
-			{"label": "4 Mikið"},
-			{"label": "5 Mjög mikið"}
-		],
-	},
-	"2:1_1": {
-		"type":"mult1",
-		"variableName": "Seventeen",
-		"questionPrompt": "Wazzap dog?",
-		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
-		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
-		"labels": [
-			{"label": "1 Örlítið"},
-			{"label": "2 Dálítið"},
-			{"label": "3 Nokkuð"},
-			{"label": "4 Mikið"},
-			{"label": "5 Mjög mikið"}
-		],
-	}
-
-};
-
 // Questions to set up participant notifications so that notifications are customized to participant's schedule
 var participantSetupList = [
 	{
@@ -67,14 +14,46 @@ var questionList = [
 	/*this is a multiple choice question*/
 	{
 		"type":"mult1",
-		"variableName": "snooze",
-		"questionPrompt": "Are you able to take the survey now?",
-		"minResponse": 0,
-		"maxResponse": 1,
+		"variableName": "Stúrinn",
+		"questionPrompt": "Ertu eitthvað stúrinn?",
+		"minResponse": 1,
+		"maxResponse": 2,
 		"labels": [
-	        {"label": "No"},
-	        {"label": "Yes"}
-        ],
+			{"label": "Yes"},
+			{"label": "No"}
+		],
+		"branching": {
+			"1": [
+				{
+					"type":"mult1",
+					"variableName": "Seventeen",
+					"questionPrompt": "Ertu eitthvað bömmaður?",
+					"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
+					"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
+					"labels": [
+						{"label": "1 Örlítið"},
+						{"label": "2 Dálítið"},
+						{"label": "3 Nokkuð"},
+						{"label": "4 Mikið"},
+						{"label": "5 Mjög mikið"}
+					],
+				},
+				{
+					"type":"mult1",
+					"variableName": "Seventeen",
+					"questionPrompt": "Wazzap dog?",
+					"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
+					"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
+					"labels": [
+						{"label": "1 Örlítið"},
+						{"label": "2 Dálítið"},
+						{"label": "3 Nokkuð"},
+						{"label": "4 Mikið"},
+						{"label": "5 Mjög mikið"}
+					],
+				}
+			]
+		}
 	},
 	/*1*/
 	/*"instructions" or descriptive texts only need 3 properties. You simply need to type in your instructions
