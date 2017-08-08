@@ -25,33 +25,36 @@ SOFTWARE.
 // ###########################
 // Time variables for schedule
 // ###########################
+// For how many days should the survey last
 const SURVEY_DURATION_IN_DAYS = 1;
+// How many times a day should a participant be asked
 const SURVEYS_DONE_PER_DAY = 1;
-// in days
+// After the setup is finish, how many days should 
+// the app wait until starting the survey?
 const SURVEY_WAIT_PERIOD_BEFOR_START = 0;
-// 24 hour format(int)
+// The time frame to ask questions each day
+// 24 hour format(integer, no leading zero)
 const SURVEY_START_HOUR = 3;
 const SURVEY_START_MINUTE = 12;
 const SURVEY_END_HOUR = 3;
 const SURVEY_END_MINUTE = 13;
+// Shorten the time frame that the survey schedule can be created on(each interval per day)
 // To prevent surveys from overlaping due to the random
 // factor, it might be a good idea to set a time buffer
 // that reduces the chance of another survey starting before
 // a previous has finished.
 // minutes
 const SURVEY_TIME_BUFFER = 0;
+// How many minutes does the participant have to finish each survey
 const SURVEY_TIME_ALLOWED_TO_ANSWER = 60;
 
 // #######################
 // Scheduling message text
 // #######################
+// Title of the scheduling messaga that is displayed to the user
 const SURVEY_SCHEDULE_TITLE_MESSAGE = "Daily Survey";
+// body of the scheduling message that is displayed to the user
 const SURVEY_SCHEDULE_DISPLAY_MESSAGE = "Time for your next Dialy Survey!";
-
-// #####################
-// Data storage settings
-// #####################
-const SURVEY_DATA_STORAGE_NAME = 'survey_data';
 
 // ####################
 // Data saving protocol
@@ -59,11 +62,13 @@ const SURVEY_DATA_STORAGE_NAME = 'survey_data';
 // If you are using the google option, the type should be 'get'
 // If you are using the server option, the type should be 'post'
 const SURVEY_DATA_SAVE_PROTOCOL = 'get';
+// URL to the google script
 // Be aware that this url also needs to go into index.html in the top meta tag
 const SURVEY_DATA_SAVE_URL = "https://script.google.com/macros/s/AKfycbze3LDQEa32kdodAUwHjMMp1HgAQTXjaYtGd6Bj7giFFjEyHkR_/exec";
 
+// #### Variables below this line moste likely dont need to be changed ####
 
-// millisec
-// 60000 = 1 min
-// 4320000 = 72 min
-// 86400000 = 1 day
+// #####################
+// Data storage settings
+// #####################
+const SURVEY_DATA_STORAGE_NAME = 'survey_data';
