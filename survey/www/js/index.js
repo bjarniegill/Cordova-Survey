@@ -28,17 +28,7 @@ var participantSetup = participantSetupList;
 var currentBranchingQuestionList;
 
 // These are the messages that are displayed at the end of the questionnaire
-var lastPage = [
-	// input your last-page message
-	{
-		message: "End of questionnaire message."
-	},
-	// input snooze last-page message
-	{
-		message: "You have no surveys at this time, or time has expired."
-	}
-];
-
+var lastPage = endPages;
 
 // This section of code creates the templates for all the question formats
 var questionTmpl = "<p>{{{questionText}}}</p><ul>{{{buttons}}}</ul>";

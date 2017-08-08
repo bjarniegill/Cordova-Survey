@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-// Questions to set up participant notifications so that notifications are customized to participant's schedule
+// Questions that will be asked during the setup
 var participantSetupList = [
 	{
 		"type":"text",
@@ -31,6 +31,19 @@ var participantSetupList = [
 	}
 ];
 
+// Info messages
+var endPages = [
+	// Displayed when user has answered all questions
+	{
+		message: "End of questionnaire message."
+	},
+	// Displayed when cannot answer any questions
+	{
+		message: "You have no surveys at this time, or time has expired."
+	}
+];
+
+// Questions that will be asked every time the a schedule is triggered
 var questionList = [
 	/*number each question in this variable starting from 0, so it is easy to reference question items when setting up question logic*/
 	/*0*/
