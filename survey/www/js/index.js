@@ -70,18 +70,6 @@ var app = {
 	},
 
 	onResume: function() {
-		if (isBranchingQuestion(localStore.current_question)) {
-			if (localStore.removedBranchItems) {
-				var branchQuestions = fetchBranchFromQuestions(surveyQuestions, localStore.current_question);
-				for (var i = 0; i < parseInt(localStore.removedBranchItems); i++) {
-					branchQuestions.shift();
-				}
-			}
-		}
-
-		currentBranchingQuestionList = branchQuestions;
-		localStore.removedBranchItems = "";
-
 		app.sampleParticipant();
 	},
 
@@ -300,6 +288,7 @@ var app = {
 				uniqueKey + '.' + "completed" + "_" + "completedSurvey"  + "_" + getDateString(),
 				1
 			);
+			localStore["survey_schedules_epoch"] = removeCurrentScheduleEpoch(uniqueKey, localStore["survey_schedules_epoch"]);
 			app.saveDataLastPage();
 		}
 	},
@@ -345,13 +334,13 @@ var app = {
 		// Record value of clicked button
 		else if (type == 'mult1') {
 			response = button.value;
-			//Create a unique identifier for this response
+			// Create a unique identifier for this response
 			currentQuestion = button.id.slice(0,-1);
 		}
 		// Record value of clicked button
 		else if (type == 'mult2') {
 			response = button.value;
-			//Create a unique identifier for this response
+			// Create a unique identifier for this response
 			currentQuestion = button.id.slice(0,-1);
 		}
 		else if (type == 'datePicker') {
@@ -441,6 +430,17 @@ var app = {
 	},
 
 	sampleParticipant: function() {
+		if (isBranchingQuestion(localStore.current_question)) {
+			if (localStore.removedBranchItems) {
+				var branchQuestions = fetchBranchFromQuestions(surveyQuestions, localStore.current_question);
+				for (var i = 0; i < parseInt(localStore.removedBranchItems); i++) {
+					branchQuestions.shift();
+				}
+			}
+		}
+		currentBranchingQuestionList = branchQuestions;
+		localStore.removedBranchItems = "";
+
 		var scheduleEpoch = partisipantCanAnswer(JSON.parse(localStore['survey_schedules_epoch']));
 		if (scheduleEpoch) {
 			if (parseInt(localStore.current_schedule) !== scheduleEpoch) {
@@ -464,9 +464,9 @@ var app = {
 
 	// uncomment this function to test data saving function (Stage 2 of Customization)
 	saveDataLastPage:function() {
-		safeAddPartisipantDataToLocalStore(localStore, 'participant_id', localStore.participant_id);
-		safeAddPartisipantDataToLocalStore(localStore, 'uniqueKey', localStore.uniqueKey);
-		 $.ajax({
+		//safeAddPartisipantDataToLocalStore(localStore, 'participant_id', localStore.participant_id);
+		//safeAddPartisipantDataToLocalStore(localStore, 'uniqueKey', localStore.uniqueKey);
+		$.ajax({
 			type: SURVEY_DATA_SAVE_PROTOCOL,
 			url: SURVEY_DATA_SAVE_URL,
 			data: JSON.parse(localStore[SURVEY_DATA_STORAGE_NAME]),
@@ -485,8 +485,6 @@ var app = {
 
 	// Uncomment this function to test data saving function (Stage 2 of Customization)
 	saveData:function() {
-		safeAddPartisipantDataToLocalStore(localStore, 'participant_id', localStore.participant_id);
-		safeAddPartisipantDataToLocalStore(localStore, 'uniqueKey', localStore.uniqueKey);
 		$.ajax({
 			type: SURVEY_DATA_SAVE_PROTOCOL,
 			url: SURVEY_DATA_SAVE_URL,
@@ -510,6 +508,7 @@ var app = {
 
 		var timeSpanInterval = Math.floor(dailyTimeSpan / SURVEYS_DONE_PER_DAY);
 		var surveyTimes = [];
+		var notificationCounter = 1;
 
 		for (var day = 0; day < SURVEY_DURATION_IN_DAYS; day++) {
 			for (var interval = 0; interval < SURVEYS_DONE_PER_DAY; interval++) {
@@ -526,20 +525,20 @@ var app = {
 				var randomisedSurveyDate = new Date(scheduledSurveyDate.getTime() + randomTime);
 				console.log(randomisedSurveyDate.toString());
 				
-				var surveyScheduleId = (day * 100) + interval;
 				cordova.plugins.notification.local.schedule({
 					icon: 'ic_launcher',
-					id: surveyScheduleId,
+					id: notificationCounter,
 					at: randomisedSurveyDate,
 					text: SURVEY_SCHEDULE_DISPLAY_MESSAGE,
 					title: SURVEY_SCHEDULE_TITLE_MESSAGE + randomisedSurveyDate
 				});
 				safeAddPartisipantDataToLocalStore(
 					localStore,
-					'notification_' + surveyScheduleId,
-					localStore.participant_id + "_" + surveyScheduleId + "_" + randomisedSurveyDate
+					'notification_' + notificationCounter,
+					localStore.participant_id + "_" + notificationCounter + "_" + randomisedSurveyDate
 				);
 				surveyTimes.push(randomisedSurveyDate.getTime());
+				notificationCounter++;
 			}
 		}
 		localStore['survey_schedules_epoch'] = JSON.stringify(surveyTimes);

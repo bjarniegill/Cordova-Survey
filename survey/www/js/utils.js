@@ -136,3 +136,12 @@ var fetchBranchFromQuestions = function(questionList, branchQuestion) {
 
 	return questionList[questionNumber].branching[answerValue].slice();
 }
+
+var removeCurrentScheduleEpoch = function(uniqueKey, scheduleList) {
+	var parsedList = JSON.parse(scheduleList);
+	var index = parsedList.indexOf(uniqueKey)
+	if (index > -1) {
+		parsedList.splice(index, 1);
+	}
+	return JSON.stringify(parsedList);
+}
