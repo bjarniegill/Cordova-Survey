@@ -31,17 +31,6 @@ var participantSetupList = [
 	}
 ];
 
-// Info messages
-var endPages = [
-	// Displayed when user has answered all questions
-	{
-		message: "End of questionnaire message."
-	},
-	// Displayed when cannot answer any questions
-	{
-		message: "You have no surveys at this time, or time has expired."
-	}
-];
 
 // Questions that will be asked every time the a schedule is triggered
 var questionList = [
@@ -63,7 +52,7 @@ var questionList = [
 			"1": [
 				{
 					"type":"mult1",
-					"variableName": "Seventeen",
+					"variableName": "bommadur",
 					"questionPrompt": "Ertu eitthvað bömmaður?",
 					"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 					"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
@@ -77,7 +66,7 @@ var questionList = [
 				},
 				{
 					"type":"mult1",
-					"variableName": "Seventeen",
+					"variableName": "wazzup",
 					"questionPrompt": "Wazzap dog?",
 					"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 					"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
@@ -92,21 +81,13 @@ var questionList = [
 			]
 		}
 	},
-	/*1*/
-	/*"instructions" or descriptive texts only need 3 properties. You simply need to type in your instructions
-	or descriptive texts in the questionPrompt section*/
-	{
-		"type":"instructions",
-		"variableName": "One",
-		"questionPrompt": "Hér koma stuttar leiðbeiningar",
-	},
 	// SPURNINGAR UM LÍÐAN
-	/*2*/
+	/*1*/
 	/*a "mult1" question is for multiple choice questions and for Likert-scale items that only contain 
 	positive values (including 0). Below is what a multiple choice question would look like*/
 	{
 		"type":"mult1",
-		"variableName": "Two",
+		"variableName": "sad",
 		"questionPrompt": "Hversu döpur/dapur eða niðurdregin(n) ertu núna?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
@@ -118,12 +99,12 @@ var questionList = [
 	        {"label": "5 Mjög mikið"}
         ],
 	},
-	/*3*/
+	/*2*/
 	/*a "mult1" question is for multiple choice questions and for Likert-scale items that only contain
 	positive values (including 0). Below is what a multiple choice question would look like*/
 	{
 		"type":"mult1",
-		"variableName": "Three",
+		"variableName": "anx",
 		"questionPrompt": "Hversu kvíðin(n) ertu núna?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
@@ -134,7 +115,73 @@ var questionList = [
 			{"label": "4 Mikið"},
 			{"label": "5 Mjög mikið"}
 		],
-	}
+	},	
+	/*3*/
+	/*a "mult1" question is for multiple choice questions and for Likert-scale items that only contain
+	positive values (including 0). Below is what a multiple choice question would look like*/
+	{
+		"type":"mult1",
+		"variableName": "glad",
+		"questionPrompt": "Hversu glaður/glöð eða kát(ur) ertu núna?",
+		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
+		"labels": [
+        	{"label": "1 Ekkert"},
+			{"label": "2 Aðeins"},
+			{"label": "3 Nokkuð"},
+			{"label": "4 Mikið"},
+			{"label": "5 Mjög mikið"}
+		],
+		"branching": {
+			"2": [
+				{
+					"type":"mult1",
+					"variableName": "glad max",
+					"questionPrompt": "Hversu glaður ertu?",
+					"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
+					"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
+					"labels": [
+						{"label": "1 Örlítið"},
+						{"label": "2 Dálítið"},
+						{"label": "3 Nokkuð"},
+						{"label": "4 Mikið"},
+						{"label": "5 Mjög mikið"}
+					],
+				},
+				{
+					"type":"mult1",
+					"variableName": "glad min",
+					"questionPrompt": "Hversu lítið glaður ertu?",
+					"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
+					"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
+					"labels": [
+						{"label": "1 Örlítið"},
+						{"label": "2 Dálítið"},
+						{"label": "3 Nokkuð"},
+						{"label": "4 Mikið"},
+						{"label": "5 Mjög mikið"}
+					],
+				}
+			]
+		}
+	},
+	/*4*/
+	/*a "mult1" question is for multiple choice questions and for Likert-scale items that only contain
+	positive values (including 0). Below is what a multiple choice question would look like*/
+	{
+		"type":"mult1",
+		"variableName": "tight",
+		"questionPrompt": "Hversu uppspennt(ur) ertu núna?",
+		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
+		"labels": [
+			{"label": "1 Ekkert"},
+			{"label": "2 Aðeins"},
+			{"label": "3 Nokkuð"},
+			{"label": "4 Mikið"},
+			{"label": "5 Mjög mikið"}
+		],
+	},
 ]
 
 /* surveyQuestion Model (This time, written in "JSON" format to interface more cleanly with Mustache) */

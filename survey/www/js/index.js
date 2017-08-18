@@ -27,8 +27,8 @@ var surveyQuestions = questionList;
 var participantSetup = participantSetupList;
 var currentBranchingQuestionList;
 
-// These are the messages that are displayed at the end of the questionnaire
-var lastPage = endPages;
+// Information messages displayed in several places through the app
+var infoMessages = appMessages;
 
 // This section of code creates the templates for all the question formats
 var questionTmpl = "<p>{{{questionText}}}</p><ul>{{{buttons}}}</ul>";
@@ -70,7 +70,12 @@ var app = {
 	},
 
 	onResume: function() {
-		app.sampleParticipant();
+		if (localStore.participant_id === " " || !localStore.participant_id || localStore.participant_id == "undefined") {
+			app.init();
+		}
+		else {
+			app.sampleParticipant();	
+		}
 	},
 
 	onPause: function() {
@@ -88,7 +93,7 @@ var app = {
 
 	// Initialize the whole thing
 	init: function() {
-		localStore.clear()
+		// localStore.clear()
 		// The statement below states that if there is no participant id or if the participant id is left blank,
 		// ExperienceSampler would present the participant set up questions
 		if (localStore.participant_id === " " || !localStore.participant_id || localStore.participant_id == "undefined") {
@@ -294,7 +299,7 @@ var app = {
 	},
 
 	renderNoCurrentSurveyPage: function(pageData) {
-		$("#question").html(Mustache.render(lastPageTmpl, lastPage[1]));
+		$("#question").html(Mustache.render(lastPageTmpl, infoMessages['no_questions']));
 		if (local[SURVEY_DATA_STORAGE_NAME]) {
 			app.saveDataLastPage();
 		}
@@ -415,9 +420,11 @@ var app = {
 				});
 			}
 			else {
-				app.scheduleNotifs();
-				app.isSetup = false;
-				app.renderLastPage(lastPage[0], count);
+				if (app.isSetup) {
+					app.scheduleNotifs();
+					app.isSetup = false;
+				}
+				app.renderLastPage(infoMessages['questions_finished'], count);
 			}
 		}
 	},
@@ -440,9 +447,13 @@ var app = {
 		}
 		currentBranchingQuestionList = branchQuestions;
 		localStore.removedBranchItems = "";
-
-		var scheduleEpoch = partisipantCanAnswer(JSON.parse(localStore['survey_schedules_epoch']));
+		var scheduleEpoch;
+		if (localStore['survey_schedules_epoch']) {
+			scheduleEpoch = partisipantCanAnswer(JSON.parse(localStore['survey_schedules_epoch']));	
+		}
 		if (scheduleEpoch) {
+			uniqueKey = scheduleEpoch;
+			// true if this is a new survey
 			if (parseInt(localStore.current_schedule) !== scheduleEpoch) {
 				localStore.current_schedule = scheduleEpoch;
 				localStore.current_question = 0;
@@ -459,13 +470,17 @@ var app = {
 		else {
 			app.renderNoCurrentSurveyPage()
 		}
-		app.saveData();
+		if (localStore[SURVEY_DATA_STORAGE_NAME]) {
+			app.saveData();
+		}
 	},
 
 	// uncomment this function to test data saving function (Stage 2 of Customization)
 	saveDataLastPage:function() {
-		//safeAddPartisipantDataToLocalStore(localStore, 'participant_id', localStore.participant_id);
-		//safeAddPartisipantDataToLocalStore(localStore, 'uniqueKey', localStore.uniqueKey);
+		safeAddPartisipantDataToLocalStore(localStore, 'participant_id', localStore.participant_id);
+		safeAddPartisipantDataToLocalStore(localStore, 'uniqueKey', localStore.uniqueKey);
+		console.log("save last data"); 
+		console.log(localStore[SURVEY_DATA_STORAGE_NAME]);
 		$.ajax({
 			type: SURVEY_DATA_SAVE_PROTOCOL,
 			url: SURVEY_DATA_SAVE_URL,
@@ -473,11 +488,11 @@ var app = {
 			crossDomain: true,
 			success: function (result) {
 				delete localStore[SURVEY_DATA_STORAGE_NAME];
-				$("#question").html("<h3>Your responses have been recorded. Thank you for completing this survey.</h3>");
+				$("#question").html("<h3>" + infoMessages["save_success"].message + "</h3>");
 			},
 			error: function (request, error) {
 				console.log(error);
-				$("#question").html("<h3>Please try resending data. If problems persist, please contact the researchers (uoft.dailylifestudy@gmail.com).</h3><br><button>Resend data</button>");
+				$("#question").html("<h3>" + infoMessages["save_fail"].message + "</h3><br><button>" + infoMessages["resend_button"].message + "</button>");
 				$("#question button").click(function () { app.saveDataLastPage(); });
 			}
 		});
@@ -485,12 +500,17 @@ var app = {
 
 	// Uncomment this function to test data saving function (Stage 2 of Customization)
 	saveData:function() {
+		safeAddPartisipantDataToLocalStore(localStore, 'participant_id', localStore.participant_id);
+		safeAddPartisipantDataToLocalStore(localStore, 'uniqueKey', localStore.uniqueKey);
+		console.log("save data"); 
+		console.log(localStore[SURVEY_DATA_STORAGE_NAME]);
 		$.ajax({
 			type: SURVEY_DATA_SAVE_PROTOCOL,
 			url: SURVEY_DATA_SAVE_URL,
 			data: JSON.parse(localStore[SURVEY_DATA_STORAGE_NAME]),
 			crossDomain: true,
 			success: function (result) {
+				console.log("I saved so shit!");
 				delete localStore[SURVEY_DATA_STORAGE_NAME];
 			},
 			error: function (request, error) { console.log(error); }
@@ -525,18 +545,20 @@ var app = {
 				var randomisedSurveyDate = new Date(scheduledSurveyDate.getTime() + randomTime);
 				console.log(randomisedSurveyDate.toString());
 				
-				cordova.plugins.notification.local.schedule({
-					icon: 'ic_launcher',
-					id: notificationCounter,
-					at: randomisedSurveyDate,
-					text: SURVEY_SCHEDULE_DISPLAY_MESSAGE,
-					title: SURVEY_SCHEDULE_TITLE_MESSAGE + randomisedSurveyDate
-				});
 				safeAddPartisipantDataToLocalStore(
 					localStore,
 					'notification_' + notificationCounter,
 					localStore.participant_id + "_" + notificationCounter + "_" + randomisedSurveyDate
 				);
+
+				cordova.plugins.notification.local.schedule({
+					icon: 'ic_launcher',
+					id: notificationCounter,
+					at: randomisedSurveyDate,
+					text: infoMessages["survey_schedule_display_message"].message,
+					title: infoMessages["survey_schedule_title_message"].message
+				});
+
 				surveyTimes.push(randomisedSurveyDate.getTime());
 				notificationCounter++;
 			}
