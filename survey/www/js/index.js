@@ -74,7 +74,7 @@ var app = {
 			app.init();
 		}
 		else {
-			app.sampleParticipant();	
+			app.sampleParticipant();
 		}
 	},
 
@@ -88,7 +88,10 @@ var app = {
 			nrOfRemovedItemsFromBranchQuestion = branchQuestions.length - (currentBranchingQuestionList.length + 1);
 			localStore.removedBranchItems = nrOfRemovedItemsFromBranchQuestion;
 		}
-		app.pauseEvents();
+		localStore.uniqueKey = uniqueKey;
+		if (localStore[SURVEY_DATA_STORAGE_NAME]) {
+			app.saveData();
+		}
 	},
 
 	// Initialize the whole thing
@@ -280,6 +283,7 @@ var app = {
 	renderLastPage: function(pageData, question_index) {
 		$("#question").html(Mustache.render(lastPageTmpl, pageData));
 		if (app.isSetup) {
+			app.isSetup = false;
 			app.saveDataLastPage();
 		}
 		// This part of the code says that if the participant has completed the entire questionnaire,
@@ -290,7 +294,7 @@ var app = {
 		else {
 			safeAddPartisipantDataToLocalStore(
 				localStore,
-				uniqueKey + '.' + "completed" + "_" + "completedSurvey"  + "_" + getDateString(),
+				uniqueKey + '_' + "completedSurvey"  + "_" + getDateString(),
 				1
 			);
 			localStore["survey_schedules_epoch"] = removeCurrentScheduleEpoch(uniqueKey, localStore["survey_schedules_epoch"]);
@@ -422,18 +426,10 @@ var app = {
 			else {
 				if (app.isSetup) {
 					app.scheduleNotifs();
-					app.isSetup = false;
 				}
 				app.renderLastPage(infoMessages['questions_finished'], count);
 			}
 		}
-	},
-
-	// Prepare for Resume and Store Data
-	// Time stamps the current moment to determine how to resume
-	pauseEvents: function() {
-		localStore.uniqueKey = uniqueKey;
-		app.saveData();
 	},
 
 	sampleParticipant: function() {
