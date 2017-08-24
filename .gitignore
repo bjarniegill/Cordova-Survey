@@ -1,6 +1,8 @@
 # Mac
 .DS_Store
 
+*.csv
+
 # Cordova
 survey/hooks/
 survey/node_modules/
