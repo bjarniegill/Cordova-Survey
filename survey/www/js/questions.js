@@ -196,7 +196,7 @@ var questionList = [
 		"variableName": "5-gladur",
 		"questionPrompt": "Hversu glaður/glöð eða kát(ur) ertu núna?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
-		"maxResponse": 2 /*maximum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
 			{"label": "1 Ekkert"},
 			{"label": "2 Aðeins"},
@@ -210,7 +210,7 @@ var questionList = [
 		"variableName": "6-ahugasamur",
 		"questionPrompt": "Hversu áhugasamur/áhugasöm ertu núna?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
-		"maxResponse": 2 /*maximum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
 			{"label": "1 Ekkert"},
 			{"label": "2 Aðeins"},
@@ -224,7 +224,7 @@ var questionList = [
 		"variableName": "7-anaegdur",
 		"questionPrompt": "Hversu ánægð/ánægður ertu núna?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
-		"maxResponse": 2 /*maximum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
 			{"label": "1 Ekkert"},
 			{"label": "2 Aðeins"},
@@ -285,7 +285,7 @@ var questionList = [
 		"variableName": "10-jakvaedir-atburdir",
 		"questionPrompt": "Hefur einhver jákvæður atburður átt sér stað frá því síðast?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
-		"maxResponse": 2 /*maximum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 6 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
 			{"label": "1 Enginn jákvæður atburður"},
 			{"label": "2 Örlítið jákvæður"},
@@ -301,7 +301,7 @@ var questionList = [
 		"variableName": "11-neikvaedir-atburdir",
 		"questionPrompt": "Hefur einhver jákvæður atburður átt sér stað frá því síðast?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
-		"maxResponse": 2 /*maximum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 6 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
 			{"label": "1 Enginn neikvæður atburður"},
 			{"label": "2 Örlítið neikvæður"},
