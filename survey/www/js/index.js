@@ -304,7 +304,7 @@ var app = {
 
 	renderNoCurrentSurveyPage: function(pageData) {
 		$("#question").html(Mustache.render(lastPageTmpl, infoMessages['no_questions']));
-		if (local[SURVEY_DATA_STORAGE_NAME]) {
+		if (localStore[SURVEY_DATA_STORAGE_NAME]) {
 			app.saveDataLastPage();
 		}
 	},
