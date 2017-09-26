@@ -18,8 +18,16 @@ Within a section there will be set a random time to schedule the app to ask the 
 
 ### Setting up platform
 Add platform:
-```cordova platform add ios/android```
+```
+cordova platform add ios/android
+```
+
 Remove platform:
-```cordova platform remove ios/android```
+```
+cordova platform remove ios/android
+```
+
 Install plugins by executing the survey folder:
-```bash add-plugins.sh```
+```
+bash add-plugins.sh
+```
