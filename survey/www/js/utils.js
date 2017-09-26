@@ -29,14 +29,8 @@ var addLeadingZero = function(value) {
 	return value.toString();
 }
 
-var getDateString = function(timeStamp=null) {
-	var date;
-	if (timeStamp) {
-		date = new Date(timeStamp);
-	}
-	else {
-		date = new Date();
-	}
+var getDateString = function() {
+	var date = new Date();
 	var year = date.getFullYear();
 	var month = addLeadingZero(date.getMonth());
 	var day = addLeadingZero(date.getDate());

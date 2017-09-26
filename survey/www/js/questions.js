@@ -27,11 +27,11 @@ var participantSetupList = [
 	}
 ];
 
-var branchingJakvaedar = [
+var groupAminningList = [
 	{
 		"type":"mult1",
-		"variableName": "8-1-jakvaedar-hugsanir",
-		"questionPrompt": "Varðandi þessar jákvæðu hugsanir: Ég áttaði mig ekki á að ég væri byrjuð/byrjaður að hugsa svona.",
+		"variableName": "(11-13)-1-hugsanir-attasig",
+		"questionPrompt": "Varðandi þessar hugsanir: Ég áttaði mig ekki á að ég væri byrjuð/byrjaður að hugsa svona.",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
@@ -41,13 +41,13 @@ var branchingJakvaedar = [
 			{"label": "4 Hvorki né"},
 			{"label": "5 Aðeins sammála"},
 			{"label": "6 Nokkuð sammála"},
-			{"label": "7 Mjög sammála"},
-		],
+			{"label": "7 Mjög sammála"}
+        ]
 	},
 	{
 		"type":"mult1",
-		"variableName": "8-2-jakvaedar-hugsanir",
-		"questionPrompt": "Varðandi þessar jákvæðu hugsanir: Ég byrjaði að hugsa svona án þess að ætla mér það.",
+		"variableName": "(11-13)-2-hugsanir-skjotast",
+		"questionPrompt": "Varðandi þessar hugsanir: Þær skutu upp í huga mér án þess að ég ætlaði mér það.",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
@@ -57,13 +57,13 @@ var branchingJakvaedar = [
 			{"label": "4 Hvorki né"},
 			{"label": "5 Aðeins sammála"},
 			{"label": "6 Nokkuð sammála"},
-			{"label": "7 Mjög sammála"},
-		],
+			{"label": "7 Mjög sammála"}
+        ]
 	},
 	{
 		"type":"mult1",
-		"variableName": "8-3-jakvaedar-hugsanir",
-		"questionPrompt": "Varðandi þessar jákvæðu hugsanir: Þessi hugsunarháttur er dæmigerður fyrir mig í þessum kringumstæðum.",
+		"variableName": "(11-13)-3-hugsanir-adstaedur",
+		"questionPrompt": "Varðandi þessar hugsanir: Þessi hugsanaháttur er dæmigerður fyrir mig í þessum aðstæðum.",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
@@ -73,16 +73,16 @@ var branchingJakvaedar = [
 			{"label": "4 Hvorki né"},
 			{"label": "5 Aðeins sammála"},
 			{"label": "6 Nokkuð sammála"},
-			{"label": "7 Mjög sammála"},
-		],
-	}
+			{"label": "7 Mjög sammála"}
+        ]
+	},
 ]
 
 var branchingNeikvaedar = [
 	{
 		"type":"mult1",
 		"variableName": "9-1-neikvaedar-hugsanir",
-		"questionPrompt": "Varðandi þessar neikvæðu hugsanir: Ég áttaði mig ekki á að ég væri byrjuð/byrjaður að hugsa svona.",
+		"questionPrompt": "Varðandi þessar neikvæðu hugsanir: Ég áttaði mig ekki á að ég væri byrjuð/byrjaður að hugsa svona neikvætt.",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
@@ -98,7 +98,7 @@ var branchingNeikvaedar = [
 	{
 		"type":"mult1",
 		"variableName": "9-2-neikvaedar-hugsanir",
-		"questionPrompt": "Varðandi þessar neikvæðu hugsanir: Ég byrjaði að hugsa svona án þess að ætla mér það.",
+		"questionPrompt": "Varðandi þessar neikvæðu hugsanir: Neikvæðu hugsanirnar skutu upp í huga mér án þess að ég ætlaði mér það.",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
@@ -114,7 +114,7 @@ var branchingNeikvaedar = [
 	{
 		"type":"mult1",
 		"variableName": "9-3-neikvaedar-hugsanir",
-		"questionPrompt": "Varðandi þessar neikvæðu hugsanir: Þessi hugsunarháttur er dæmigerður fyrir mig í þessum kringumstæðum.",
+		"questionPrompt": "Varðandi þessar neikvæðu hugsanir: Þessi neikvæði hugsanaháttur er dæmigerður fyrir mig í þessum aðstæðum.",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
@@ -134,11 +134,13 @@ var branchingNeikvaedar = [
 /* This is used to input the questions you would like to ask in your experience sampling questionnaire*/
 var questionList = [
 	// a "mult1" question is for multiple choice questions and for Likert-scale items that only contain 
-	// positive values (including 0). Below is what a multiple choice question would look like
+	// positive values.
+
+	// SPURNINGAR UM LÍÐAN
 	{
 		"type":"mult1",
-		"variableName": "1-sakbitinn",
-		"questionPrompt": "Hversu sakbitin(n) ertu núna?",
+		"variableName": "1-dapur",
+		"questionPrompt": "Hversu döpur/dapur eða niðurdregin(n) ertu núna?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
@@ -151,8 +153,8 @@ var questionList = [
 	},
 	{
 		"type":"mult1",
-		"variableName": "2-pirradur",
-		"questionPrompt": "Hversu pirraður/pirruð ertu núna?",
+		"variableName": "2-sakbitinn",
+		"questionPrompt": "Hversu sakbitin(n) ertu núna?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
@@ -165,8 +167,8 @@ var questionList = [
 	},
 	{
 		"type":"mult1",
-		"variableName": "3-kvidinn",
-		"questionPrompt": "Hversu kvíðin(n) ertu núna?",
+		"variableName": "3-pirradur",
+		"questionPrompt": "Hversu pirraður/pirruð ertu núna?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
@@ -179,8 +181,8 @@ var questionList = [
 	},
 	{
 		"type":"mult1",
-		"variableName": "4-spenntur",
-		"questionPrompt": "Hversu uppspennt(ur) ertu núna?",
+		"variableName": "4-kvidinn",
+		"questionPrompt": "Hversu kvíðin(n) ertu núna?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
@@ -193,8 +195,8 @@ var questionList = [
 	},
 	{
 		"type":"mult1",
-		"variableName": "5-gladur",
-		"questionPrompt": "Hversu glaður/glöð eða kát(ur) ertu núna?",
+		"variableName": "5-uppspenntur",
+		"questionPrompt": "Hversu uppspennt(ur) ertu núna?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
@@ -207,7 +209,21 @@ var questionList = [
 	},
 	{
 		"type":"mult1",
-		"variableName": "6-ahugasamur",
+		"variableName": "6-gladur",
+		"questionPrompt": "Hversu glaður/glöð eða kát(ur) ertu núna?",
+		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
+		"labels": [
+			{"label": "1 Ekkert"},
+			{"label": "2 Aðeins"},
+			{"label": "3 Nokkuð"},
+			{"label": "4 Mikið"},
+			{"label": "5 Mjög mikið"}
+		]
+	},
+	{
+		"type":"mult1",
+		"variableName": "7-ahugasamur",
 		"questionPrompt": "Hversu áhugasamur/áhugasöm ertu núna?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
@@ -221,94 +237,130 @@ var questionList = [
 	},
 	{
 		"type":"mult1",
-		"variableName": "7-anaegdur",
+		"variableName": "8-anaegdur",
 		"questionPrompt": "Hversu ánægð/ánægður ertu núna?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
-		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 6 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
 			{"label": "1 Ekkert"},
 			{"label": "2 Aðeins"},
 			{"label": "3 Nokkuð"},
 			{"label": "4 Mikið"},
 			{"label": "5 Mjög mikið"}
-		]
-	},
-	// SPURNINGAR UM JÁKVÆÐAR HUGSANIR
-	{
-		"type":"mult1",
-		"variableName": "8-jakvaedar-hugsanir",
-		"questionPrompt": "Varstu með einhverjar jákvæðar hugsanir um sjálfa(n) þig, aðstæður þínar eða framtíð þína rétt fyrir áminninguna?",
-		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
-		"maxResponse": 6 /*maximum numerical value of the scale or multiple choice option*/,
-		"labels": [
-			{"label": "1 Engar jákvæðar hugsanir"},
-			{"label": "2 Örlítið jákvæðar"},
-			{"label": "3 Dálítið jákvæðar"},
-			{"label": "4 Nokkuð jákvæðar"},
-			{"label": "5 Mikið jákvæðar"},
-			{"label": "6 Mikið jákvæðar"}
 		],
-		"branching": {
-			"2": branchingJakvaedar,
-			"3": branchingJakvaedar,
-			"4": branchingJakvaedar,
-			"5": branchingJakvaedar,
-			"6": branchingJakvaedar,
-		}
 	},
 	// SPURNINGAR UM NEIKVÆÐAR HUGSANIR
 	{
 		"type":"mult1",
 		"variableName": "9-neikvaedar-hugsanir",
-		"questionPrompt": "Varstu með einhverjar neikvæðar hugsanir um sjálfa(n) þig, aðstæður þínar eða framtíð þína rétt fyrir áminninguna?",
+		"questionPrompt": "Hversu neikvæðar voru hugsanir þínar rétt fyrir áminninguna? ",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 6 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
-			{"label": "1 Engar neikvæðar hugsanir"},
+			{"label": "1 Alls ekki neikvæðar"},
 			{"label": "2 Örlítið neikvæðar"},
-			{"label": "3 Dálítið neikvæðar"},
-			{"label": "4 Nokkuð neikvæðar"},
-			{"label": "5 Mikið neikvæðar"},
-			{"label": "6 Mjög mikið neikvæðar"}
+			{"label": "3 Nokkuð neikvæðar"},
+			{"label": "4 Töluvert neikvæðar"},
+			{"label": "5 Mjög neikvæðar"}
 		],
 		"branching": {
 			"2": branchingNeikvaedar,
 			"3": branchingNeikvaedar,
 			"4": branchingNeikvaedar,
 			"5": branchingNeikvaedar,
-			"6": branchingNeikvaedar,
 		}
 	},
-	// SPURNINGAR UM JÁKVÆÐA ATBURÐI
+	// SPURNINGAR UM JÁKVÆÐAR HUGSANIR
 	{
 		"type":"mult1",
-		"variableName": "10-jakvaedir-atburdir",
-		"questionPrompt": "Hefur einhver jákvæður atburður átt sér stað frá því síðast?",
+		"variableName": "10-jakvaedir-hugsanir",
+		"questionPrompt": "Hversu jákvæðar voru hugsanir þínar rétt fyrir áminninguna?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 6 /*maximum numerical value of the scale or multiple choice option*/,
+		"labels": [
+			{"label": "1 Alls ekki jákvæðar"},
+			{"label": "2 Örlítið jákvæðar"},
+			{"label": "3 Dálítið jákvæðar"},
+			{"label": "4 Nokkuð jákvæðar"},
+			{"label": "5 Töluvert jákvæðar"},
+			{"label": "6 Mjög jákvæðar"}
+		]
+	},
+	// SPURNINGAR UM GRUFL
+	{
+		"type":"mult1",
+		"variableName": "11-aminning-gladur",
+		"questionPrompt": "Rétt fyrir áminninguna: Ég var að hugsa um hversu glaður/glöð eða dapur/döpur ég er.",
+		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
+		"labels": [
+			{"label": "1 Mjög ósammála"},
+			{"label": "2 Nokkuð ósammála"},
+			{"label": "3 Aðeins ósammála"},
+			{"label": "4 Hvorki né"},
+			{"label": "5 Aðeins sammála"},
+			{"label": "6 Nokkuð sammála"},
+			{"label": "7 Mjög sammála"},
+		],
+	},
+	{
+		"type":"mult1",
+		"variableName": "12-aminning-bregdast-vid",
+		"questionPrompt": "Rétt fyrir áminninguna: Ég var að hugsa um hvers vegna ég skuli bregðast við eins og ég geri.",
+		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
+		"labels": [
+			{"label": "1 Mjög ósammála"},
+			{"label": "2 Nokkuð ósammála"},
+			{"label": "3 Aðeins ósammála"},
+			{"label": "4 Hvorki né"},
+			{"label": "5 Aðeins sammála"},
+			{"label": "6 Nokkuð sammála"},
+			{"label": "7 Mjög sammála"},
+		],
+	},
+	{
+		"type":"mult1",
+		"variableName": "13-aminning-lidan",
+		"questionPrompt": "Rétt fyrir áminninguna: Ég var að hugsa um hvað það gæti þýtt að mér skuli líða svona.",
+		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
+		"labels": [
+			{"label": "1 Mjög ósammála"},
+			{"label": "2 Nokkuð ósammála"},
+			{"label": "3 Aðeins ósammála"},
+			{"label": "4 Hvorki né"},
+			{"label": "5 Aðeins sammála"},
+			{"label": "6 Nokkuð sammála"},
+			{"label": "7 Mjög sammála"},
+		],
+	},
+	{
+		"type":"mult1",
+		"variableName": "14-jakvaedur-atburdur",
+		"questionPrompt": "Hefur einhver jákvæður atburður átt sér stað frá því síðast?",
+		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
 			{"label": "1 Enginn jákvæður atburður"},
 			{"label": "2 Örlítið jákvæður"},
-			{"label": "3 Dálítið jákvæður"},
-			{"label": "4 Nokkuð jákvæður"},
-			{"label": "5 Mikið jákvæður"},
-			{"label": "6 Mjög mikið jákvæður"}
-		]
+			{"label": "3 Nokkuð jákvæður"},
+			{"label": "4 Töluvert jákvæður"},
+			{"label": "5 Mjög mikið jákvæður"},
+		],
 	},
-	// SPURNINGAR UM NEIKVÆÐA ATBURÐI
 	{
 		"type":"mult1",
-		"variableName": "11-neikvaedir-atburdir",
-		"questionPrompt": "Hefur einhver jákvæður atburður átt sér stað frá því síðast?",
+		"variableName": "15-neikvaedur-atburdur",
+		"questionPrompt": "Hefur einhver neikvæður atburður átt sér stað frá því síðast?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
-		"maxResponse": 6 /*maximum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
 			{"label": "1 Enginn neikvæður atburður"},
 			{"label": "2 Örlítið neikvæður"},
-			{"label": "3 Dálítið neikvæður"},
-			{"label": "4 Nokkuð neikvæður"},
-			{"label": "5 Mikið neikvæður"},
-			{"label": "6 Mjög mikið neikvæður"}
-		]
+			{"label": "3 Nokkuð neikvæður"},
+			{"label": "4 Töluvert neikvæður"},
+			{"label": "5 Mjög neikvæður jákvæður"},
+		],
 	},
 ];

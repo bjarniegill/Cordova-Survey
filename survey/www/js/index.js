@@ -25,6 +25,7 @@ var localStore = window.localStorage;
 // imported from questions.js
 var surveyQuestions = questionList;
 var participantSetup = participantSetupList;
+var groupQuestions = groupAminningList;
 var currentBranchingQuestionList;
 
 // Information messages displayed in several places through the app
@@ -378,6 +379,20 @@ var app = {
 			);
 		}
 
+		// Group qustion extra answers quick fix
+		// Carefull: This is hardcoded due to late feature request
+		if (groupQuestions.length > 0) {
+			if (count == 10 || count == 11 || count == 12) {
+				var value = parseInt(response);
+				if (value >= 5 && value <= 7) {
+					surveyQuestions.splice(13, 0, groupQuestions[0]);
+					surveyQuestions.splice(14, 0, groupQuestions[1]);
+					surveyQuestions.splice(15, 0, groupQuestions[2]);
+					groupQuestions = [];
+				}
+			}
+		}
+
 		var currentQuestionList;
 		var branchingQuestionIndex
 		if (app.isSetup) {
@@ -514,9 +529,6 @@ var app = {
 	},
 
 	// Local Notifications Javascript
-	// Stage 5 of Customization
-	// This code is for a interval-contingent design where all participants answer the questionnaire at the same time
-	// (i.e., not customized to their schedule)
 	scheduleNotifs:function() {
 		var millisecondTimeBuffer = Math.floor((SURVEY_TIME_BUFFER * 60000) / 2);
 		var baseTime = getSurveyStartBaseTime();
@@ -546,7 +558,8 @@ var app = {
 					'notification_' + notificationCounter,
 					localStore.participant_id + "_" + notificationCounter + "_" + randomisedSurveyDate
 				);
-
+				// Uncomment for Android
+				
 				cordova.plugins.notification.local.schedule({
 					icon: 'ic_launcher',
 					id: notificationCounter,
@@ -554,7 +567,16 @@ var app = {
 					text: infoMessages["survey_schedule_display_message"].message,
 					title: infoMessages["survey_schedule_title_message"].message
 				});
-
+				
+				// Uncomment for IOS
+				/*
+				cordova.plugins.notification.local.schedule({
+					id: notificationCounter,
+					at: randomisedSurveyDate,
+					text: infoMessages["survey_schedule_display_message"].message,
+					title: infoMessages["survey_schedule_title_message"].message
+				});
+				*/
 				surveyTimes.push(randomisedSurveyDate.getTime());
 				notificationCounter++;
 			}
