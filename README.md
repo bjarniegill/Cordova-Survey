@@ -21,13 +21,21 @@ Add platform:
 ```
 cordova platform add ios/android
 ```
-
 Remove platform:
 ```
 cordova platform remove ios/android
 ```
-
-Install plugins by executing the survey folder:
+Install plugins by executing ```add-plugins.sh``` in the survey folder:
 ```
 bash add-plugins.sh
+```
+
+### Running app
+Run app:
+```
+cordova run android/ios
+```
+Run on ios device:
+```
+cordova run ios --device
 ```
