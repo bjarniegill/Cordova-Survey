@@ -382,7 +382,7 @@ var app = {
 		// Group qustion extra answers quick fix
 		// Carefull: This is hardcoded due to late feature request
 		if (groupQuestions.length > 0) {
-			if (count == 10 || count == 11 || count == 12) {
+			if (count >= 10 && count <= 12) {
 				var value = parseInt(response);
 				if (value >= 5 && value <= 7) {
 					surveyQuestions.splice(13, 0, groupQuestions[0]);

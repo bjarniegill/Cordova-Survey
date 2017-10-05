@@ -26,27 +26,27 @@ SOFTWARE.
 // Time variables for schedule
 // ###########################
 // For how many days should the survey last
-const SURVEY_DURATION_IN_DAYS = 1;
+const SURVEY_DURATION_IN_DAYS = 6;
 // How many times a day should a participant be asked
-const SURVEYS_DONE_PER_DAY = 2;
+const SURVEYS_DONE_PER_DAY = 10;
 // After the setup is finish, how many days should 
 // the app wait until starting the survey?
-const SURVEY_WAIT_PERIOD_BEFOR_START = 0;
+const SURVEY_WAIT_PERIOD_BEFOR_START = 1;
 // The time frame to ask questions each day
 // 24 hour format(integer, no leading zero)
-const SURVEY_START_HOUR = 23;
-const SURVEY_START_MINUTE = 10;
-const SURVEY_END_HOUR = 23;
-const SURVEY_END_MINUTE = 20;
+const SURVEY_START_HOUR = 10;
+const SURVEY_START_MINUTE = 0;
+const SURVEY_END_HOUR = 22;
+const SURVEY_END_MINUTE = 0;
 // Shorten the time frame that the survey schedule can be created on(each interval per day)
 // To prevent surveys from overlaping due to the random
 // factor, it might be a good idea to set a time buffer
 // that reduces the chance of another survey starting before
 // a previous has finished.
 // minutes
-const SURVEY_TIME_BUFFER = 2;
+const SURVEY_TIME_BUFFER = 0;
 // How many minutes does the participant have to finish each survey
-const SURVEY_TIME_ALLOWED_TO_ANSWER = 10;
+const SURVEY_TIME_ALLOWED_TO_ANSWER = 15;
 
 // ####################
 // Data saving protocol
@@ -55,27 +55,27 @@ const SURVEY_TIME_ALLOWED_TO_ANSWER = 10;
 // If you are using the server option, the type should be 'post'
 const SURVEY_DATA_SAVE_PROTOCOL = 'get';
 // URL to the google script
-// Be aware that this url also needs to go into index.html in the top meta tag
-const SURVEY_DATA_SAVE_URL = "https://script.google.com/macros/s/AKfycbze3LDQEa32kdodAUwHjMMp1HgAQTXjaYtGd6Bj7giFFjEyHkR_/exec";
+// **BE AWARE** that this url also needs to go into index.html in the top meta tag
+const SURVEY_DATA_SAVE_URL = "https://script.google.com/macros/s/AKfycbxWy25vHz2W7caorDOVEV1xbaWM2TGKWyuIVn72uBXUTRAGF_c/exec";
 
 // #########################
 // Messages to user from app
 // #########################
 var appMessages = {
 	// Displayed when user has answered all questions
-	"questions_finished": { message: "End of questionnaire message." },
+	"questions_finished": { message: "Könnun lokið." },
 	// Displayed when cannot answer any questions
-	"no_questions": { message: "You have no surveys at this time, or time has expired." },
+	"no_questions": { message: "Engar nýjar snjallsímakannanir hafa borist eða tíminn til að svara síðustu könnun hefur runnið út. Vertu vakandi fyrir næstu!" },
 	// Displayed when data is sent successfully
-	"save_success": { message: "Your responses have been recorded. Thank you for completing this survey." },
+	"save_success": { message: "Svör þín hafa verið skráð. Takk fyrir að svara." },
 	// Displayed when data send fails
-	"save_fail": { message: "Please try resending data. If problems persist, please contact the researchers (uoft.dailylifestudy@gmail.com)" },
+	"save_fail": { message: "Ekki tókst að senda svör þín. Vinsamlegst reyndu að senda aftur. Ef þessi skilaboð koma endurtekið upp látið okkur vita í gegnum netfangið khh17@hi.is" },
 	// Text for the "resend data" button
-	"resend_button": { message: "Resend data" },
+	"resend_button": { message: "Endursenda gögn" },
 	// Title of the scheduling messaga that is displayed to the user
-	"survey_schedule_title_message": { message: "Daily Survey"},
+	"survey_schedule_title_message": { message: "Rannsókn"},
 	// body of the scheduling message that is displayed to the user
-	"survey_schedule_display_message": { message: "Time for your next Dialy Survey!"}
+	"survey_schedule_display_message": { message: "Kominn tími á næstu snjallsímakönnun!"}
 };
 
 

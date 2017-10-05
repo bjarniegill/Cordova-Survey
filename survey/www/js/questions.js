@@ -35,13 +35,13 @@ var groupAminningList = [
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
-			{"label": "1 Mjög ósammála"},
-			{"label": "2 Nokkuð ósammála"},
-			{"label": "3 Aðeins ósammála"},
-			{"label": "4 Hvorki né"},
-			{"label": "5 Aðeins sammála"},
-			{"label": "6 Nokkuð sammála"},
-			{"label": "7 Mjög sammála"}
+			{"label": "-3 Mjög ósammála"},
+			{"label": "-2 Nokkuð ósammála"},
+			{"label": "-1 Aðeins ósammála"},
+			{"label": "0 Hvorki né"},
+			{"label": "+1 Aðeins sammála"},
+			{"label": "+2 Nokkuð sammála"},
+			{"label": "+3 Mjög sammála"}
         ]
 	},
 	{
@@ -51,13 +51,13 @@ var groupAminningList = [
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
-			{"label": "1 Mjög ósammála"},
-			{"label": "2 Nokkuð ósammála"},
-			{"label": "3 Aðeins ósammála"},
-			{"label": "4 Hvorki né"},
-			{"label": "5 Aðeins sammála"},
-			{"label": "6 Nokkuð sammála"},
-			{"label": "7 Mjög sammála"}
+			{"label": "-3 Mjög ósammála"},
+			{"label": "-2 Nokkuð ósammála"},
+			{"label": "-1 Aðeins ósammála"},
+			{"label": "0 Hvorki né"},
+			{"label": "+1 Aðeins sammála"},
+			{"label": "+2 Nokkuð sammála"},
+			{"label": "+3 Mjög sammála"}
         ]
 	},
 	{
@@ -67,13 +67,13 @@ var groupAminningList = [
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
-			{"label": "1 Mjög ósammála"},
-			{"label": "2 Nokkuð ósammála"},
-			{"label": "3 Aðeins ósammála"},
-			{"label": "4 Hvorki né"},
-			{"label": "5 Aðeins sammála"},
-			{"label": "6 Nokkuð sammála"},
-			{"label": "7 Mjög sammála"}
+			{"label": "-3 Mjög ósammála"},
+			{"label": "-2 Nokkuð ósammála"},
+			{"label": "-1 Aðeins ósammála"},
+			{"label": "0 Hvorki né"},
+			{"label": "+1 Aðeins sammála"},
+			{"label": "+2 Nokkuð sammála"},
+			{"label": "+3 Mjög sammála"}
         ]
 	},
 ]
@@ -86,13 +86,13 @@ var branchingNeikvaedar = [
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
-			{"label": "1 Mjög ósammála"},
-			{"label": "2 Nokkuð ósammála"},
-			{"label": "3 Aðeins ósammála"},
-			{"label": "4 Hvorki né"},
-			{"label": "5 Aðeins sammála"},
-			{"label": "6 Nokkuð sammála"},
-			{"label": "7 Mjög sammála"},
+			{"label": "-3 Mjög ósammála"},
+			{"label": "-2 Nokkuð ósammála"},
+			{"label": "-1 Aðeins ósammála"},
+			{"label": "0 Hvorki né"},
+			{"label": "+1 Aðeins sammála"},
+			{"label": "+2 Nokkuð sammála"},
+			{"label": "+3 Mjög sammála"}
 		],
 	},
 	{
@@ -102,13 +102,13 @@ var branchingNeikvaedar = [
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
-			{"label": "1 Mjög ósammála"},
-			{"label": "2 Nokkuð ósammála"},
-			{"label": "3 Aðeins ósammála"},
-			{"label": "4 Hvorki né"},
-			{"label": "5 Aðeins sammála"},
-			{"label": "6 Nokkuð sammála"},
-			{"label": "7 Mjög sammála"},
+			{"label": "-3 Mjög ósammála"},
+			{"label": "-2 Nokkuð ósammála"},
+			{"label": "-1 Aðeins ósammála"},
+			{"label": "0 Hvorki né"},
+			{"label": "+1 Aðeins sammála"},
+			{"label": "+2 Nokkuð sammála"},
+			{"label": "+3 Mjög sammála"}
 		],
 	},
 	{
@@ -118,13 +118,13 @@ var branchingNeikvaedar = [
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
-			{"label": "1 Mjög ósammála"},
-			{"label": "2 Nokkuð ósammála"},
-			{"label": "3 Aðeins ósammála"},
-			{"label": "4 Hvorki né"},
-			{"label": "5 Aðeins sammála"},
-			{"label": "6 Nokkuð sammála"},
-			{"label": "7 Mjög sammála"},
+			{"label": "-3 Mjög ósammála"},
+			{"label": "-2 Nokkuð ósammála"},
+			{"label": "-1 Aðeins ósammála"},
+			{"label": "0 Hvorki né"},
+			{"label": "+1 Aðeins sammála"},
+			{"label": "+2 Nokkuð sammála"},
+			{"label": "+3 Mjög sammála"}
 		],
 	}
 ]
@@ -240,7 +240,7 @@ var questionList = [
 		"variableName": "8-anaegdur",
 		"questionPrompt": "Hversu ánægð/ánægður ertu núna?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
-		"maxResponse": 6 /*maximum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
 			{"label": "1 Ekkert"},
 			{"label": "2 Aðeins"},
@@ -255,7 +255,7 @@ var questionList = [
 		"variableName": "9-neikvaedar-hugsanir",
 		"questionPrompt": "Hversu neikvæðar voru hugsanir þínar rétt fyrir áminninguna? ",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
-		"maxResponse": 6 /*maximum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
 			{"label": "1 Alls ekki neikvæðar"},
 			{"label": "2 Örlítið neikvæðar"},
@@ -294,13 +294,13 @@ var questionList = [
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
-			{"label": "1 Mjög ósammála"},
-			{"label": "2 Nokkuð ósammála"},
-			{"label": "3 Aðeins ósammála"},
-			{"label": "4 Hvorki né"},
-			{"label": "5 Aðeins sammála"},
-			{"label": "6 Nokkuð sammála"},
-			{"label": "7 Mjög sammála"},
+			{"label": "-3 Mjög ósammála"},
+			{"label": "-2 Nokkuð ósammála"},
+			{"label": "-1 Aðeins ósammála"},
+			{"label": "0 Hvorki né"},
+			{"label": "+1 Aðeins sammála"},
+			{"label": "+2 Nokkuð sammála"},
+			{"label": "+3 Mjög sammála"}
 		],
 	},
 	{
@@ -310,13 +310,13 @@ var questionList = [
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
-			{"label": "1 Mjög ósammála"},
-			{"label": "2 Nokkuð ósammála"},
-			{"label": "3 Aðeins ósammála"},
-			{"label": "4 Hvorki né"},
-			{"label": "5 Aðeins sammála"},
-			{"label": "6 Nokkuð sammála"},
-			{"label": "7 Mjög sammála"},
+			{"label": "-3 Mjög ósammála"},
+			{"label": "-2 Nokkuð ósammála"},
+			{"label": "-1 Aðeins ósammála"},
+			{"label": "0 Hvorki né"},
+			{"label": "+1 Aðeins sammála"},
+			{"label": "+2 Nokkuð sammála"},
+			{"label": "+3 Mjög sammála"}
 		],
 	},
 	{
@@ -326,13 +326,13 @@ var questionList = [
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
 		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
-			{"label": "1 Mjög ósammála"},
-			{"label": "2 Nokkuð ósammála"},
-			{"label": "3 Aðeins ósammála"},
-			{"label": "4 Hvorki né"},
-			{"label": "5 Aðeins sammála"},
-			{"label": "6 Nokkuð sammála"},
-			{"label": "7 Mjög sammála"},
+			{"label": "-3 Mjög ósammála"},
+			{"label": "-2 Nokkuð ósammála"},
+			{"label": "-1 Aðeins ósammála"},
+			{"label": "0 Hvorki né"},
+			{"label": "+1 Aðeins sammála"},
+			{"label": "+2 Nokkuð sammála"},
+			{"label": "+3 Mjög sammála"}
 		],
 	},
 	{
@@ -360,7 +360,7 @@ var questionList = [
 			{"label": "2 Örlítið neikvæður"},
 			{"label": "3 Nokkuð neikvæður"},
 			{"label": "4 Töluvert neikvæður"},
-			{"label": "5 Mjög neikvæður jákvæður"},
+			{"label": "5 Mjög neikvæður"},
 		],
 	},
 ];
