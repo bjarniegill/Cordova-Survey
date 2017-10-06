@@ -276,14 +276,13 @@ var questionList = [
 		"variableName": "10-jakvaedir-hugsanir",
 		"questionPrompt": "Hversu jákvæðar voru hugsanir þínar rétt fyrir áminninguna?",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
-		"maxResponse": 6 /*maximum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 5 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
 			{"label": "1 Alls ekki jákvæðar"},
 			{"label": "2 Örlítið jákvæðar"},
-			{"label": "3 Dálítið jákvæðar"},
-			{"label": "4 Nokkuð jákvæðar"},
-			{"label": "5 Töluvert jákvæðar"},
-			{"label": "6 Mjög jákvæðar"}
+			{"label": "3 Nokkuð jákvæðar"},
+			{"label": "4 Töluvert jákvæðar"},
+			{"label": "5 Mjög jákvæðar"}
 		]
 	},
 	// SPURNINGAR UM GRUFL
