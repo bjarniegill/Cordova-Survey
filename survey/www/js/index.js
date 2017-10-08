@@ -388,6 +388,7 @@ var app = {
 					surveyQuestions.splice(13, 0, groupQuestions[0]);
 					surveyQuestions.splice(14, 0, groupQuestions[1]);
 					surveyQuestions.splice(15, 0, groupQuestions[2]);
+					surveyQuestions.splice(16, 0, groupQuestions[3]);
 					groupQuestions = [];
 				}
 			}
