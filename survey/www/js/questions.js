@@ -31,9 +31,9 @@ var groupAminningList = [
 	{
 		"type":"mult1",
 		"variableName": "(11-13)-hjalpar-texti",
-		"questionPrompt": "Nú koma þrjár spurningar sem spyrja sérstaklega út í þær hugsanir sem átti við um þig í síðustu ÞREMUR spurningum hér á undan.",
+		"questionPrompt": "Nú koma þrjár spurningar sem spyrja sérstaklega út í þær hugsanir sem áttu við um þig í síðustu ÞREMUR spurningum hér á undan.",
 		"minResponse": 1 /*minimum numerical value of the scale or multiple choice option*/,
-		"maxResponse": 7 /*maximum numerical value of the scale or multiple choice option*/,
+		"maxResponse": 1 /*maximum numerical value of the scale or multiple choice option*/,
 		"labels": [
 			{"label": "Halda áfram"}
         ]
