@@ -90,9 +90,6 @@ var app = {
 			localStore.removedBranchItems = nrOfRemovedItemsFromBranchQuestion;
 		}
 		localStore.uniqueKey = uniqueKey;
-		if (localStore[SURVEY_DATA_STORAGE_NAME]) {
-			app.saveData();
-		}
 	},
 
 	// Initialize the whole thing
@@ -482,9 +479,6 @@ var app = {
 		else {
 			app.renderNoCurrentSurveyPage()
 		}
-		if (localStore[SURVEY_DATA_STORAGE_NAME]) {
-			app.saveData();
-		}
 	},
 
 	// uncomment this function to test data saving function (Stage 2 of Customization)
@@ -507,25 +501,6 @@ var app = {
 				$("#question").html("<h3>" + infoMessages["save_fail"].message + "</h3><br><button>" + infoMessages["resend_button"].message + "</button>");
 				$("#question button").click(function () { app.saveDataLastPage(); });
 			}
-		});
-	},
-
-	// Uncomment this function to test data saving function (Stage 2 of Customization)
-	saveData:function() {
-		safeAddPartisipantDataToLocalStore(localStore, 'participant_id', localStore.participant_id);
-		safeAddPartisipantDataToLocalStore(localStore, 'uniqueKey', localStore.uniqueKey);
-		console.log("save data"); 
-		console.log(localStore[SURVEY_DATA_STORAGE_NAME]);
-		$.ajax({
-			type: SURVEY_DATA_SAVE_PROTOCOL,
-			url: SURVEY_DATA_SAVE_URL,
-			data: JSON.parse(localStore[SURVEY_DATA_STORAGE_NAME]),
-			crossDomain: true,
-			success: function (result) {
-				console.log("I saved so shit!");
-				delete localStore[SURVEY_DATA_STORAGE_NAME];
-			},
-			error: function (request, error) { console.log(error); }
 		});
 	},
 
