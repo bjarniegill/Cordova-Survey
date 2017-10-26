@@ -534,25 +534,14 @@ var app = {
 					'notification_' + notificationCounter,
 					localStore.participant_id + "_" + notificationCounter + "_" + randomisedSurveyDate
 				);
-				// Uncomment for Android
 				
 				cordova.plugins.notification.local.schedule({
-					icon: 'ic_launcher',
 					id: notificationCounter,
 					at: randomisedSurveyDate,
 					text: infoMessages["survey_schedule_display_message"].message,
 					title: infoMessages["survey_schedule_title_message"].message
 				});
 				
-				// Uncomment for IOS
-				/*
-				cordova.plugins.notification.local.schedule({
-					id: notificationCounter,
-					at: randomisedSurveyDate,
-					text: infoMessages["survey_schedule_display_message"].message,
-					title: infoMessages["survey_schedule_title_message"].message
-				});
-				*/
 				surveyTimes.push(randomisedSurveyDate.getTime());
 				notificationCounter++;
 			}

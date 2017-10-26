@@ -1,37 +1,38 @@
 {
-    "name": "com.evaluation.survey",
-    "displayName": "SurveyApp",
-    "version": "1.0.0",
-    "description": "A sample Apache Cordova application that responds to the deviceready event.",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "com.evaluation.survey",
+  "displayName": "SurveyApp",
+  "version": "1.0.0",
+  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "cordova-ios": "^4.4.0",
+    "cordova-plugin-app-event": "file:node_modules/cordova-plugin-app-event",
+    "cordova-plugin-badge": "^0.8.5",
+    "cordova-plugin-console": "^1.1.0",
+    "cordova-plugin-device": "^1.1.6",
+    "cordova-plugin-dialogs": "^1.3.3",
+    "cordova-plugin-local-notifications": "git+https://github.com/katzer/cordova-plugin-local-notifications.git#x",
+    "cordova-plugin-splashscreen": "^4.0.3",
+    "cordova-plugin-vibration": "^2.1.5",
+    "cordova-plugin-whitelist": "^1.3.2"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-dialogs": {},
+      "cordova-plugin-console": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-vibration": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-local-notifications": {}
     },
-    "author": "Apache Cordova Team",
-    "license": "Apache-2.0",
-    "dependencies": {
-        "cordova-android": "^6.2.3",
-        "cordova-plugin-app-event": "file:node_modules/cordova-plugin-app-event",
-        "cordova-plugin-console": "^1.0.7",
-        "cordova-plugin-device": "^1.1.6",
-        "cordova-plugin-dialogs": "^1.3.3",
-        "cordova-plugin-splashscreen": "^4.0.3",
-        "cordova-plugin-vibration": "^2.1.5",
-        "cordova-plugin-whitelist": "^1.3.2",
-        "de.appplant.cordova.plugin.local-notification": "^0.8.5"
-    },
-    "cordova": {
-        "plugins": {
-            "cordova-plugin-whitelist": {},
-            "cordova-plugin-dialogs": {},
-            "cordova-plugin-console": {},
-            "cordova-plugin-splashscreen": {},
-            "cordova-plugin-vibration": {},
-            "cordova-plugin-device": {},
-            "de.appplant.cordova.plugin.local-notification": {}
-        },
-        "platforms": [
-            "android"
-        ]
-    }
+    "platforms": [
+      "ios"
+    ]
+  }
 }
