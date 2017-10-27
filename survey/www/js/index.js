@@ -537,9 +537,9 @@ var app = {
 				
 				cordova.plugins.notification.local.schedule({
 					id: notificationCounter,
-					at: randomisedSurveyDate,
+					title: infoMessages["survey_schedule_title_message"].message,
 					text: infoMessages["survey_schedule_display_message"].message,
-					title: infoMessages["survey_schedule_title_message"].message
+					trigger: { at: randomisedSurveyDate }
 				});
 				
 				surveyTimes.push(randomisedSurveyDate.getTime());
