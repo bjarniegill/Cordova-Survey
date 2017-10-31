@@ -513,6 +513,7 @@ var app = {
 		var timeSpanInterval = Math.floor(dailyTimeSpan / SURVEYS_DONE_PER_DAY);
 		var surveyTimes = [];
 		var notificationCounter = 1;
+		var scheduledEventsArray = [];
 
 		for (var day = 0; day < SURVEY_DURATION_IN_DAYS; day++) {
 			for (var interval = 0; interval < SURVEYS_DONE_PER_DAY; interval++) {
@@ -535,17 +536,20 @@ var app = {
 					localStore.participant_id + "_" + notificationCounter + "_" + randomisedSurveyDate
 				);
 				
-				cordova.plugins.notification.local.schedule({
+				scheduledEventsArray.push({
 					id: notificationCounter,
 					title: infoMessages["survey_schedule_title_message"].message,
 					text: infoMessages["survey_schedule_display_message"].message,
-					trigger: { at: randomisedSurveyDate }
+					trigger: { at: randomisedSurveyDate },
+					priority: 1
 				});
+				
 				
 				surveyTimes.push(randomisedSurveyDate.getTime());
 				notificationCounter++;
 			}
 		}
+		cordova.plugins.notification.local.schedule(scheduledEventsArray);
 		localStore['survey_schedules_epoch'] = JSON.stringify(surveyTimes);
 	},
 
