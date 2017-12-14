@@ -19,8 +19,16 @@ def reconstruct_data_in_long_format(data):
 	for question, answer in data:
 		split_question = question.split('_')
 		survey_unique_key = split_question[0]
-		question_name = split_question[1]
-		date = datetime(*[int(item) for item in split_question[2:-1]])
+		try:
+			question_name = split_question[1]
+		except Exception as e:
+			print "There is likey that a part of the field is missing from the following data:"
+			print answer
+			sys.exit()
+		date_int_list = [int(item) for item in split_question[2:-1]]
+		# This is due to JavaScript counting months from zero
+		date_int_list[1] = date_int_list[1] + 1
+		date = datetime(*date_int_list)
 		long_format.append((participant_id, survey_unique_key, question_name, answer, date))
 
 	sorted_long_format = sorted(long_format, key=lambda tup: tup[4])
