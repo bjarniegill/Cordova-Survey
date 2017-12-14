@@ -27,6 +27,8 @@ var participantSetupList = [
 	}
 ];
 
+// These are the hard coded questions
+// Just delete them if making a new question list
 var groupAminningList = [
 	{
 		"type":"mult1",

@@ -378,6 +378,7 @@ var app = {
 
 		// Group qustion extra answers quick fix
 		// Carefull: This is hardcoded due to late feature request
+		// This should be deleted if working with a new set of questions
 		if (groupQuestions.length > 0) {
 			if (count >= 10 && count <= 12) {
 				var value = parseInt(response);
