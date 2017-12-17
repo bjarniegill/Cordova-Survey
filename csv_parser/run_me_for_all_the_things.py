@@ -3,10 +3,9 @@ from datetime import datetime
 
 from clean_data import clean_data, write_to_clean_data_file
 from shared_parser_functions import (
-	get_and_remove_participant_id_from_data, 
-	list_file_paths, 
-	now,
-	pprint,
+	get_and_remove_participant_id_from_data,
+	list_file_paths,
+	datetime_now,
 	read_data_from_file
 )
 
@@ -22,17 +21,18 @@ def reconstruct_data_in_long_format(data):
 		try:
 			question_name = split_question[1]
 		except Exception as e:
-			print "There is likey that a part of the field is missing from the following data:"
+			print "There is likely that a part of the field is missing from the following data:"
 			print answer
 			sys.exit()
 		date_int_list = [int(item) for item in split_question[2:-1]]
 		# This is due to JavaScript counting months from zero
-		date_int_list[1] = date_int_list[1] + 1
+		date_int_list[1] += 1
 		date = datetime(*date_int_list)
 		long_format.append((participant_id, survey_unique_key, question_name, answer, date))
 
 	sorted_long_format = sorted(long_format, key=lambda tup: tup[4])
 	return sorted_long_format
+
 
 def write_to_long_format_file(data, now):
 	file_name = now + ' ' + data[0][0]
@@ -46,6 +46,7 @@ def write_to_long_format_file(data, now):
 	long_file.close()
 	return output_data
 
+
 def write_to_merge_file(data, now):
 	file_name = now + ' merged_data'
 	file_path = join(settings.PATH_TO_MERGED_LONG_DATA, file_name + settings.FILE_EXTENSION)
@@ -55,6 +56,7 @@ def write_to_merge_file(data, now):
 		merge_file = open(file_path, 'w+')
 	merge_file.write(data)
 	merge_file.close()
+
 
 def do_it(now):
 	file_path_list = list_file_paths(settings.PATH_TO_CSV_FILES)
@@ -68,6 +70,5 @@ def do_it(now):
 
 
 if __name__ == '__main__':
-	now = now()
+	now = datetime_now()
 	do_it(now)
-	

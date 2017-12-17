@@ -1,11 +1,10 @@
 from os.path import join
 
 from shared_parser_functions import (
-	list_file_paths, 
-	now, 
+	list_file_paths,
+	datetime_now,
 	read_data_from_file
 )
-
 import settings
 
 
@@ -24,6 +23,7 @@ def clean_data(data):
 		data = list(set(data))
 	return data
 
+
 def write_to_clean_data_file(data, file_path, now):
 	file_name = now + ' ' + file_path.split('/')[-1].split('.')[0]
 	file_path = join(settings.PATH_TO_CLEANED_DATA, file_name + settings.FILE_EXTENSION)
@@ -31,6 +31,7 @@ def write_to_clean_data_file(data, file_path, now):
 	for item in data:
 		clean_file.write(','.join(item) + '\r\n')
 	clean_file.close()
+
 
 def do_it(now):
 	file_path_list = list_file_paths(settings.PATH_TO_CSV_FILES)
@@ -40,5 +41,5 @@ def do_it(now):
 		write_to_clean_data_file(cleaned_data, file_path, now)
 
 if __name__ == '__main__':
-	now = now()
+	now = datetime_now()
 	do_it(now)
