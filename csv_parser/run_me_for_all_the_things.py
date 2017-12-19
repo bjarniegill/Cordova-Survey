@@ -1,5 +1,6 @@
-from os.path import isfile, join
 from datetime import datetime
+from os.path import isfile, join
+import sys
 
 from clean_data import clean_data, write_to_clean_data_file
 from shared_parser_functions import (
@@ -8,6 +9,7 @@ from shared_parser_functions import (
 	datetime_now,
 	read_data_from_file
 )
+from notification_service import SurveyNumberToIdMatcher
 
 import settings
 
@@ -28,7 +30,7 @@ def reconstruct_data_in_long_format(data):
 		# This is due to JavaScript counting months from zero
 		date_int_list[1] += 1
 		date = datetime(*date_int_list)
-		long_format.append((participant_id, survey_unique_key, question_name, answer, date))
+		long_format.append([participant_id, survey_unique_key, question_name, answer, date])
 
 	sorted_long_format = sorted(long_format, key=lambda tup: tup[4])
 	return sorted_long_format
@@ -40,9 +42,10 @@ def write_to_long_format_file(data, now):
 	long_file = open(file_path, 'w+')
 	output_data = ''
 	for item in data:
-		str_formated = '{},{}{}'.format(','.join(item[:-1]), str(item[-1]), '\r\n')
-		output_data += str_formated
-		long_file.write(str_formated)
+		item[4] = str(item[4])
+		str_formatted = '{}{}'.format(','.join(item), '\r\n')
+		output_data += str_formatted
+		long_file.write(str_formatted)
 	long_file.close()
 	return output_data
 
@@ -61,11 +64,22 @@ def write_to_merge_file(data, now):
 def do_it(now):
 	file_path_list = list_file_paths(settings.PATH_TO_CSV_FILES)
 	for file_path in file_path_list:
+		sys.stdout.write('.')
+		sys.stdout.flush()
 		data = read_data_from_file(file_path)
 		cleaned_data = clean_data(data)
 		write_to_clean_data_file(cleaned_data, file_path, now)
 		long_format_data = reconstruct_data_in_long_format(cleaned_data)
-		output_data = write_to_long_format_file(long_format_data, now)
+		try:
+			survey_matcher = SurveyNumberToIdMatcher()
+			survey_matcher.get_notifications_from_data(data)
+			updated_long_format_data = survey_matcher.updated_answers_with_survey_number(long_format_data)
+			output_data = write_to_long_format_file(updated_long_format_data, now)
+		except ValueError as e:
+			print ''
+			print e.message
+			print file_path
+			output_data = write_to_long_format_file(long_format_data, now)
 		write_to_merge_file(output_data, now)
 
 
